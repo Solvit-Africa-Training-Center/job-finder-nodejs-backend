@@ -1,5 +1,3 @@
-import { Sequelize } from "sequelize";
-
-export const allModel = (sequelize: Sequelize) => {
+export const allModel = () => {
   return {};
 };

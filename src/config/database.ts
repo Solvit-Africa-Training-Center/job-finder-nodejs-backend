@@ -1,18 +1,18 @@
 const prefixConf = () => {
   const prefixEnv = process.env.NODE_ENV;
-  var prefix;
+  let prefix;
   switch (prefixEnv) {
-    case "development":
-      prefix = "DEV";
+    case 'development':
+      prefix = 'DEV';
       break;
-    case "testing":
-      prefix = "TEST";
+    case 'testing':
+      prefix = 'TEST';
       break;
-    case "production":
-      prefix = "PROD";
+    case 'production':
+      prefix = 'PROD';
       break;
     default:
-      prefix = "development";
+      prefix = 'development';
       break;
   }
   return prefix;
