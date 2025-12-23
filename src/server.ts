@@ -9,7 +9,7 @@ const app: Express = express();
 const startApp = async () => {
   try {
     const Db = await initialize();
-    await Db.sequalize.authenticate();
+    await Db.sequelize.authenticate();
 
     app.listen(configs.port, () => console.log(`Server running on port ${configs.port}`));
   } catch (error) {
