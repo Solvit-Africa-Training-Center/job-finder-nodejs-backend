@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional, Sequelize } from 'sequelize';
 
 interface SampleUserAttributes {
-  id: number;
+  id: string;
   email: string;
   password: string;
   createdAt?: Date;
@@ -11,20 +11,22 @@ interface SampleUserAttributes {
 interface SampleUserCreationAttributes extends Optional<
   SampleUserAttributes,
   'id'
-> {}
+> {
+  id?: string;
+}
 
 export class SampleUser
   extends Model<SampleUserAttributes, SampleUserCreationAttributes>
   implements SampleUserAttributes
 {
-  public id!: number;
+  public id!: string;
   public email!: string;
   public password!: string;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  static associate(models: any) {}
+  association() {}
 }
 
 export const SampleUserModel = (sequelize: Sequelize) => {

@@ -54,6 +54,12 @@ export const connectToDb = async () => {
 
     const models = allModel(sequelize);
 
+    Object.values(models).map((model) => {
+      if (model.association) {
+        model.association(model);
+      }
+    });
+
     return { sequelize, ...models };
   } catch (error) {
     console.error('Error connecting to database: ', error);
