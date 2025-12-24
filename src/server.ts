@@ -1,8 +1,9 @@
-import express, { Express } from 'express';
-import { config as Dotenv } from 'dotenv';
+import express, { Express } from "express";
+import { config as Dotenv } from "dotenv";
 Dotenv();
-import { configs } from './config';
-import { initialize } from './database';
+import { configs } from "./config";
+import { initialize } from "./database";
+import mainRoute from "./routes";
 
 const app: Express = express();
 
@@ -11,9 +12,13 @@ const startApp = async () => {
     const Db = await initialize();
     await Db.sequalize.authenticate();
 
-    app.listen(configs.port, () => console.log(`Server running on port ${configs.port}`));
+    app.use(configs.prefix, mainRoute);
+
+    app.listen(configs.port, () =>
+      console.log(`Server running on port ${configs.port}`)
+    );
   } catch (error) {
-    console.log('Error starting: ', error);
+    console.log("Error starting: ", error);
   }
 };
 
