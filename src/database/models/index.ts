@@ -4,7 +4,7 @@ import Comment from './comment.model';
 import Like from './like.model';
 
 export const allModel = (sequelizeInstance?: Sequelize) => {
- 
+
   Blog.hasMany(Comment, {
     foreignKey: 'blogId',
     as: 'comments',
@@ -34,5 +34,5 @@ export const allModel = (sequelizeInstance?: Sequelize) => {
   };
 };
 
-export { Blog };
+export { Blog, Comment, Like };
 export default allModel;

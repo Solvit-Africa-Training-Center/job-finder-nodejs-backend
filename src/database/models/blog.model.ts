@@ -1,6 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import { sequelize } from '../../config/database';
 import { BlogAttributes } from '../../types/blog.interface';
+import { getCurrentDate } from '../../utils/date.util';
 
 interface BlogCreationAttributes extends Optional<BlogAttributes, 'id' | 'postedDate' | 'imageUrl'> { }
 
@@ -43,16 +44,20 @@ Blog.init(
     postedDate: {
       type: DataTypes.STRING,
       allowNull: true,
+      field: 'posted_date',
+      defaultValue: () => getCurrentDate(),
     },
     imageUrl: {
       type: DataTypes.STRING,
       allowNull: true,
+      field: 'image_url',
     },
   },
   {
-    sequelize, // Now uses the named import
+    sequelize,
     tableName: 'blogs',
     timestamps: true,
+    underscored: true,
   }
 );
 

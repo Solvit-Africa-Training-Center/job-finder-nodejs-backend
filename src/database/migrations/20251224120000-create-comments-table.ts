@@ -2,42 +2,37 @@ import { QueryInterface, DataTypes } from 'sequelize';
 
 export default {
   async up(queryInterface: QueryInterface) {
-    await queryInterface.createTable('blogs', {
+    await queryInterface.createTable('comments', {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      title: {
+      user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      username: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      content: {
+      comment: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-      posted_date: {
+      postedDate: {
         type: DataTypes.STRING,
-        allowNull: true,
-      },
-      image_url: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      created_at: {
-        type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
       },
-      updated_at: {
-        type: DataTypes.DATE,
+      blogId: {
+        type: DataTypes.INTEGER,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
       },
     });
   },
 
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('blogs');
+    await queryInterface.dropTable('comments');
   },
 };
+
