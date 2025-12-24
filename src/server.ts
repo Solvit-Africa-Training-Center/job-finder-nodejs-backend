@@ -2,16 +2,16 @@ import express, { Express } from "express";
 import { config as Dotenv } from "dotenv";
 Dotenv();
 import { configs } from "./config";
-import { initialize } from "./database";
+import { connectToDb } from "./database";
 import mainRoute from "./routes";
 
 const app: Express = express();
 
 const startApp = async () => {
   try {
-    const Db = await initialize();
-    await Db.sequalize.authenticate();
-
+    const {sequalize, ...models} = await connectToDb();
+    app.set("models",models)
+    app.use(express.json())
     app.use(configs.prefix, mainRoute);
 
     app.listen(configs.port, () =>

@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
 import { databaseConnection } from '../config';
 import { allModel } from './models';
-// import { allModel } from "./models";
+
 
 interface DatabaseConfigInterface {
   database: string;
@@ -36,7 +36,7 @@ const checkDb = async () => {
   }
 };
 
-const connectToDb = async () => {
+export const connectToDb = async () => {
   try {
     await checkDb();
 
@@ -51,7 +51,7 @@ const connectToDb = async () => {
     await sequalize.authenticate();
     console.log('Database Connected');
 
-    const models = allModel();
+    const models = allModel(sequalize);
 
     return { sequalize, ...models };
   } catch (error) {
@@ -60,13 +60,3 @@ const connectToDb = async () => {
   }
 };
 
-export const initialize = async () => {
-  try {
-    const { sequalize, ...models } = await connectToDb();
-
-    return { sequalize, ...models };
-  } catch (error) {
-    console.error('Error during inializing Db');
-    throw error;
-  }
-};
