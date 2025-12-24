@@ -1,8 +1,5 @@
-import { Model, DataTypes, Optional, Sequelize } from "sequelize";
+import { Model, DataTypes, Optional, Sequelize } from 'sequelize';
 
-/**
- * Attributes of SampleUser
- */
 interface SampleUserAttributes {
   id: number;
   email: string;
@@ -11,16 +8,11 @@ interface SampleUserAttributes {
   updatedAt?: Date;
 }
 
-/**
- * Attributes required when creating a new record
- * (id is optional because it is auto-generated)
- */
-interface SampleUserCreationAttributes
-  extends Optional<SampleUserAttributes, "id"> {}
+interface SampleUserCreationAttributes extends Optional<
+  SampleUserAttributes,
+  'id'
+> {}
 
-/**
- * SampleUser model class
- */
 export class SampleUser
   extends Model<SampleUserAttributes, SampleUserCreationAttributes>
   implements SampleUserAttributes
@@ -29,22 +21,13 @@ export class SampleUser
   public email!: string;
   public password!: string;
 
-  // timestamps
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  /**
-   * Associations
-   */
-  static associate(models: any) {
-    // define associations here
-  }
+  static associate(models: any) {}
 }
 
-/**
- * Initialize model
- */
-export default (sequelize: Sequelize) => {
+export const SampleUserModel = (sequelize: Sequelize) => {
   SampleUser.init(
     {
       id: {
@@ -64,9 +47,9 @@ export default (sequelize: Sequelize) => {
     },
     {
       sequelize,
-      modelName: "sampleuser",
-      tableName: "sampleusers", // adjust if necessary
-    }
+      modelName: 'sampleuser',
+      tableName: 'sampleusers',
+    },
   );
 
   return SampleUser;

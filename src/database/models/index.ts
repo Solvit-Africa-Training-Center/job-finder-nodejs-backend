@@ -1,7 +1,10 @@
-import { Sequelize } from "sequelize";
-import SampleUserModelInit from "./sampleuser";
+import { Sequelize } from 'sequelize';
+import { SampleUser, SampleUserModel } from './sampleuser';
 
-export const allModel = (sequelize: Sequelize) => {
-  const sampleUser = SampleUserModelInit(sequelize);
-  return { SampleUser: sampleUser };
+interface Models {
+  SampleUser: typeof SampleUser;
+}
+
+export const allModel = (sequelize: Sequelize): Models => {
+  return { SampleUser: SampleUserModel(sequelize) };
 };

@@ -1,6 +1,6 @@
-import { Sequelize } from "sequelize";
-import { databaseConnection } from "../config";
-import { allModel } from "./models";
+import { Sequelize } from 'sequelize';
+import { databaseConnection } from '../config';
+import { allModel } from './models';
 
 interface DatabaseConfigInterface {
   database: string;
@@ -12,27 +12,27 @@ interface DatabaseConfigInterface {
 const config = databaseConnection() as DatabaseConfigInterface;
 
 let sequelize = new Sequelize({
-  database: "postgres",
+  database: 'postgres',
   username: config.username,
   password: config.password,
   port: Number(config.port),
-  dialect: "postgres",
+  dialect: 'postgres',
 });
 
 const checkDb = async () => {
   try {
     const [result] = await sequelize.query(
-      `SELECT 1 FROM pg_database WHERE datname = '${config.database}'`
+      `SELECT 1 FROM pg_database WHERE datname = '${config.database}'`,
     );
 
     if (result.length === 0) {
       console.log(
-        `Database '${config.database}' doesnot exist. Creating it...`
+        `Database '${config.database}' doesnot exist. Creating it...`,
       );
       await sequelize.query(`CREATE DATABASE "${config.database}"`);
     }
   } catch (error) {
-    console.error("Error checking or creating database:", error);
+    console.error('Error checking or creating database:', error);
     throw error;
   }
 };
@@ -46,17 +46,17 @@ export const connectToDb = async () => {
       username: config.username,
       password: config.password,
       port: Number(config.port),
-      dialect: "postgres",
+      dialect: 'postgres',
     });
 
     await sequelize.authenticate();
-    console.log("Database Connected");
+    console.log('Database Connected');
 
     const models = allModel(sequelize);
 
     return { sequelize, ...models };
   } catch (error) {
-    console.error("Error connecting to database: ", error);
+    console.error('Error connecting to database: ', error);
     throw error;
   }
 };

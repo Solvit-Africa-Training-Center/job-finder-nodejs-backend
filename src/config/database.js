@@ -1,20 +1,20 @@
-require("dotenv/config");
+require('dotenv/config');
 
 const prefixConf = () => {
   const prefixEnv = process.env.NODE_ENV;
   let prefix;
   switch (prefixEnv) {
-    case "development":
-      prefix = "DEV";
+    case 'development':
+      prefix = 'DEV';
       break;
-    case "testing":
-      prefix = "TEST";
+    case 'testing':
+      prefix = 'TEST';
       break;
-    case "production":
-      prefix = "PROD";
+    case 'production':
+      prefix = 'PROD';
       break;
     default:
-      prefix = "development";
+      prefix = 'development';
       break;
   }
   return prefix;
@@ -28,7 +28,7 @@ const db = () => {
     username: process.env[`DB_${prefix}_USERNAME`],
     password: process.env[`DB_${prefix}_PASSWORD`],
     port: process.env[`DB_${prefix}_PORT`],
-    dialect: "postgres",
+    dialect: 'postgres',
   };
 };
 
