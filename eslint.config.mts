@@ -1,45 +1,43 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import { defineConfig } from "eslint/config";
-import eslintPluginPrettier from "eslint-plugin-prettier";
-import prettier from "eslint-config-prettier";
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import { defineConfig } from 'eslint/config';
+import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default defineConfig([
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
-    plugins: { js, prettier: eslintPluginPrettier },
-    extends: ["js/recommended", prettier],
+    files: ['**/*.{ts,cts,mts}'],
     languageOptions: {
-      globals: globals.browser,
-      parser: tseslint.parser, // Use TypeScript parser for TS files
+      ecmaVersion: 'latest',
+      sourceType: 'commonjs',
+      globals: globals.node,
+      parser: tseslint.parser,
       parserOptions: {
-        project: "./tsconfig.eslint.json", // Path to tsconfig for TypeScript rules
-        sourceType: "module",
+        project: './tsconfig.json',
       },
     },
-
+    plugins: {
+      '@typescript-eslint': tseslint.plugin,
+    },
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      eslintConfigPrettier,
+    ],
     rules: {
-      "no-unused-vars": "error",
-      "no-undef": "off", // Disable `no-undef` for better compatibility with globals
-      "prefer-const": "error",
-      // "no-console": "warn",
-      "no-debugger": "warn",
-      "prettier/prettier": [
-        "error",
-        {
-          singleQuote: true,
-          semi: true,
-          trailingComma: "all",
-          printWidth: 100,
-          tabWidth: 2,
-        },
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+
+      // backend-friendly
+      'no-console': 'off',
+      'no-process-exit': 'off',
     },
   },
-  tseslint.configs.recommended,
-  tseslint.configs.recommended, // Integrate TypeScript linting
   {
-    ignores: ["dist/**", "node_modules/**", "coverage/**"], // Ignore common build folders
+    ignores: ['dist/**', 'node_modules/**'],
   },
 ]);
