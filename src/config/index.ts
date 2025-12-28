@@ -8,4 +8,4 @@ export const configs: ServerInterface = {
   prefix: String(process.env.PREFIX),
 };
 
-export * from './database';
+export { databaseConnection } from './database';
