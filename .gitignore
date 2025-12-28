@@ -1,2 +1,24 @@
 .env
 node_modules
+dist
+debug.log
+coverage
+.vscode
+.env.test
+.idea
+*.local
+npm-debug.log*
+
+.DS_Store
+*.tsbuildinfo
+.cache
+*.log
+*.sqlite
+
+# TypeScript
+*.d.ts
+tsconfig.tsbuildinfo
+.vite
+
+
+
