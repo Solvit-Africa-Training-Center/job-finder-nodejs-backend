@@ -7,6 +7,8 @@ import { configs } from './config';
 import { connectToDb } from './database';
 import mainRoute from './routes';
 import { applyRateLimit } from './middlewares';
+import { errorHandler } from './middlewares/errorHandler';
+import { logger } from './middlewares/logger';
 
 const app: Express = express();
 
@@ -21,8 +23,10 @@ const startApp = async () => {
 
     app.use(configs.prefix, mainRoute);
 
+    app.use(errorHandler);
+
     app.listen(configs.port, () =>
-      console.log(`Server running on port ${configs.port}`),
+      logger.info(`Server running on port ${configs.port}`),
     );
   } catch (error) {
     console.log('Error starting: ', error);
