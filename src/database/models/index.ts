@@ -8,3 +8,5 @@ interface Models {
 export const allModel = (sequelize: Sequelize): Models => {
   return { SampleUser: SampleUserModel(sequelize) };
 };
+
+export * from './sampleuser';
