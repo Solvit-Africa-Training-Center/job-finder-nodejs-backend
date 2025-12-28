@@ -51,6 +51,7 @@ const connectToDb = async () => {
     await sequalize.authenticate();
     console.log('Database Connected');
 
+    // Initialize models with the actual Sequelize instance so Inits run
     const models = allModel();
 
     return { sequalize, ...models };

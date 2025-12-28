@@ -19,12 +19,12 @@ const prefixConf = () => {
 };
 
 export const databaseConnection = () => {
-  const prefix = prefixConf();
-
   return {
-    database: process.env[`DB_${prefix}_NAME`],
-    username: process.env[`DB_${prefix}_USERNAME`],
-    password: process.env[`DB_${prefix}_PASSWORD`],
-    port: process.env[`DB_${prefix}_PORT`],
+    database: process.env.DB_NAME,
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT || '3306', // default mysql port
+    dialect: process.env.DB_DIALECT,
   };
 };
