@@ -1,0 +1,753 @@
+openapi: 3.0.0
+info: 
+  title: Job Recruitment Platform API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api/v1 
+
+components: 
+  securitySchemes: 
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas: 
+    Error: 
+      type: object 
+      properties: 
+        message:
+          type: string
+          example: "Error message"
+    
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        statusCode:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: "Operation successful"
+        data:
+          type: object
+
+    FAQ:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        question:
+          type: string
+          example: "What is this platform about?"
+        answer:
+          type: string
+          example: "This is a job recruitment platform that connects employers with job seekers."
+        category:
+          type: string
+          example: "General"
+        displayOrder:
+          type: integer
+          example: 1
+        isActive:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    FAQInput:
+      type: object
+      required:
+        - question
+        - answer
+      properties:
+        question:
+          type: string
+          example: "What is this platform about?"
+        answer:
+          type: string
+          example: "This is a job recruitment platform."
+        category:
+          type: string
+          example: "General"
+        displayOrder:
+          type: integer
+          example: 1
+        isActive:
+          type: boolean
+          example: true
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+
+    FAQReorder:
+      type: object
+      required:
+        - faqOrders
+      properties:
+        faqOrders:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              displayOrder:
+                type: integer
+          example:
+            - id: "123e4567-e89b-12d3-a456-426614174000"
+              displayOrder: 1
+            - id: "123e4567-e89b-12d3-a456-426614174001"
+              displayOrder: 2
+
+    StaticPage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "123e4567-e89b-12d3-a456-426614174000"
+        slug:
+          type: string
+          example: "about-us"
+        title:
+          type: string
+          example: "About Us"
+        content:
+          type: string
+          example: "This is the about us page content."
+        metaTitle:
+          type: string
+          example: "About Us - Job Finder"
+        metaDescription:
+          type: string
+          example: "Learn more about our job recruitment platform."
+        isActive:
+          type: boolean
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    StaticPageInput:
+      type: object
+      required:
+        - slug
+        - title
+        - content
+      properties:
+        slug:
+          type: string
+          example: "about-us"
+        title:
+          type: string
+          example: "About Us"
+        content:
+          type: string
+          example: "This is the about us page content."
+        metaTitle:
+          type: string
+          example: "About Us - Job Finder"
+        metaDescription:
+          type: string
+          example: "Learn more about our job recruitment platform."
+        isActive:
+          type: boolean
+          example: true
+        createdBy:
+          type: string
+          format: uuid
+        updatedBy:
+          type: string
+          format: uuid
+
+tags:
+  - name: FAQs
+    description: Frequently Asked Questions management
+  - name: Static Pages
+    description: Static pages management
+
+paths:
+  /faqs:
+    get:
+      tags:
+        - FAQs
+      summary: Get all FAQs
+      description: Retrieve all FAQs with optional filter for inactive ones
+      parameters:
+        - in: query
+          name: includeInactive
+          schema:
+            type: boolean
+          description: Include inactive FAQs in the response
+          example: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FAQ'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - FAQs
+      summary: Create a new FAQ
+      description: Create a new FAQ entry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FAQInput'
+      responses:
+        '201':
+          description: FAQ created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "FAQ created successfully"
+                  data:
+                    $ref: '#/components/schemas/FAQ'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /faqs/{id}:
+    get:
+      tags:
+        - FAQs
+      summary: Get FAQ by ID
+      description: Retrieve a specific FAQ by its ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: FAQ ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/FAQ'
+        '404':
+          description: FAQ not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - FAQs
+      summary: Update FAQ
+      description: Update an existing FAQ
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: FAQ ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FAQInput'
+      responses:
+        '200':
+          description: FAQ updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "FAQ updated successfully"
+                  data:
+                    $ref: '#/components/schemas/FAQ'
+        '404':
+          description: FAQ not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - FAQs
+      summary: Delete FAQ
+      description: Soft delete an FAQ (paranoid delete)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: FAQ ID
+      responses:
+        '200':
+          description: FAQ deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "FAQ deleted successfully"
+        '404':
+          description: FAQ not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /faqs/category/{category}:
+    get:
+      tags:
+        - FAQs
+      summary: Get FAQs by category
+      description: Retrieve all FAQs in a specific category
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+          description: FAQ category
+          example: "General"
+        - in: query
+          name: includeInactive
+          schema:
+            type: boolean
+          description: Include inactive FAQs in the response
+          example: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FAQ'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /faqs/reorder:
+    post:
+      tags:
+        - FAQs
+      summary: Reorder FAQs
+      description: Update the display order of multiple FAQs
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FAQReorder'
+      responses:
+        '200':
+          description: FAQs reordered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "FAQs reordered successfully"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /pages:
+    get:
+      tags:
+        - Static Pages
+      summary: Get all static pages
+      description: Retrieve all static pages with optional filter for inactive ones
+      parameters:
+        - in: query
+          name: includeInactive
+          schema:
+            type: boolean
+          description: Include inactive pages in the response
+          example: false
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StaticPage'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    post:
+      tags:
+        - Static Pages
+      summary: Create a new static page
+      description: Create a new static page
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaticPageInput'
+      responses:
+        '201':
+          description: Page created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Page created successfully"
+                  data:
+                    $ref: '#/components/schemas/StaticPage'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /pages/{id}:
+    get:
+      tags:
+        - Static Pages
+      summary: Get static page by ID
+      description: Retrieve a specific static page by its ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Page ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/StaticPage'
+        '404':
+          description: Page not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Static Pages
+      summary: Update static page
+      description: Update an existing static page
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Page ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaticPageInput'
+      responses:
+        '200':
+          description: Page updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Page updated successfully"
+                  data:
+                    $ref: '#/components/schemas/StaticPage'
+        '404':
+          description: Page not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Static Pages
+      summary: Delete static page
+      description: Soft delete a static page (paranoid delete)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Page ID
+      responses:
+        '200':
+          description: Page deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Page deleted successfully"
+        '404':
+          description: Page not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /pages/slug/{slug}:
+    get:
+      tags:
+        - Static Pages
+      summary: Get static page by slug
+      description: Retrieve a specific static page by its slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+          description: Page slug
+          example: "about-us"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/StaticPage'
+        '404':
+          description: Page not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+ 

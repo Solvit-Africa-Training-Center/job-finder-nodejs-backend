@@ -12,7 +12,7 @@ const prefixConf = () => {
       prefix = 'PROD';
       break;
     default:
-      prefix = 'development';
+      prefix = 'DEV';
       break;
   }
   return prefix;
