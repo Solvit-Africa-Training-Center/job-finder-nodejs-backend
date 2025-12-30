@@ -1,39 +1,34 @@
 require('dotenv').config();
 
+const prefixConf = () => {
+  const prefixEnv = process.env.NODE_ENV || 'development';
+  let prefix;
+  switch (prefixEnv) {
+    case 'development':
+      prefix = 'DEV';
+      break;
+    case 'testing':
+      prefix = 'TEST';
+      break;
+    case 'production':
+      prefix = 'PROD';
+      break;
+    default:
+      prefix = 'DEV';
+      break;
+  }
+  return prefix;
+};
+
+const prefix = prefixConf();
+
 module.exports = {
   development: {
-    username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || null,
-    database: process.env.DB_NAME || 'job_finder_db',
-    host: process.env.DB_HOST || '127.0.0.1',
-    port: parseInt(process.env.DB_PORT) || 5432,
-    dialect: process.env.DB_DIALECT || 'postgres',
-    logging: true // Shows SQL queries in the console for easier debugging
-  },
-
-  test: {
-    username: process.env.DB_USERNAME || 'postgres',
-    password: process.env.DB_PASSWORD || null,
-    database: process.env.DB_NAME_TEST || 'job_finder_test',
-    host: process.env.DB_HOST || '127.0.0.1',
-    port: parseInt(process.env.DB_PORT) || 5432,
-    dialect: process.env.DB_DIALECT || 'postgres',
-    logging: false
-  },
-
-  production: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    port: parseInt(process.env.DB_PORT) || 5432,
-    dialect: process.env.DB_DIALECT || 'postgres',
-    logging: false,
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
-    }
+    username: process.env[`DB_${prefix}_USERNAME`],
+    password: process.env[`DB_${prefix}_PASSWORD`],
+    database: process.env[`DB_${prefix}_NAME`],
+    host: process.env[`DB_${prefix}_HOST`] || 'localhost',
+    port: parseInt(process.env[`DB_${prefix}_PORT`], 10),
+    dialect: 'postgres',
   },
 };
