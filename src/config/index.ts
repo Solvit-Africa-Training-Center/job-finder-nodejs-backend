@@ -4,8 +4,8 @@ interface ServerInterface {
 }
 
 export const configs: ServerInterface = {
-  port: Number(process.env.PORT),
-  prefix: String(process.env.PREFIX),
+  port: Number(process.env.PORT) || 8000,
+  prefix: process.env.PREFIX || "/api/v1",
 };
 
-export * from './database';
+export * from "./database";
