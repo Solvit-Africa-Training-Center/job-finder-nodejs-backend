@@ -67,4 +67,14 @@ export class JobCategoryService {
 
     return updated;
   }
+
+   // Delete category by ID
+  static delete(id: string): boolean {
+    const existing = mockDb.findJobCategoryById(id);
+    if (!existing) return false;
+
+    // Remove from mock DB
+    mockDb.removeJobCategory(id);
+    return true;
+  }
 }

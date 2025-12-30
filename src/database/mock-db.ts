@@ -37,6 +37,14 @@ class MockDatabase {
     return updated;
   }
 
+   removeJobCategory(id: string): boolean {
+    const index = this.jobCategories.findIndex(c => c.id === id);
+    if (index === -1) return false;
+
+    this.jobCategories.splice(index, 1);
+    return true;
+  }
+
   clear() {
     this.jobCategories = [];
   }

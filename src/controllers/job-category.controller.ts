@@ -63,4 +63,27 @@ export class JobCategoryController {
   }
 }
 
+ // Delete a category by ID
+  static deleteJobCategory(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+      const deleted = JobCategoryService.delete(id);
+
+      if (!deleted) {
+        return res.status(404).json({
+          error: "Job category not found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Job category deleted successfully",
+      });
+    } catch (err: any) {
+      return res.status(500).json({
+        error: "Internal server error",
+      });
+    }
+  }
+
 }
