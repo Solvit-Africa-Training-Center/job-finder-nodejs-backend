@@ -54,9 +54,9 @@ export const connectToDb = async () => {
 
     const models = allModel(sequelize);
 
-    Object.values(models).map((model) => {
-      if (model.association) {
-        model.association(model);
+    Object.values(models).forEach((model: any) => {
+      if (typeof model.associate === 'function') {
+        model.associate(models);
       }
     });
 

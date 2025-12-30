@@ -9,3 +9,4 @@ export const configs: ServerInterface = {
 };
 
 export * from './db';
+export * from './swagger';
