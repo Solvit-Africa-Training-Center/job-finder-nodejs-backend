@@ -1,46 +1,63 @@
-import { JobCategory } from "src/database/models/jobcategory";
-
-interface Models {
-  JobCategory: typeof JobCategory;
-}
+import { JobCategory } from "../database/models/jobcategory";
 
 export class JobCategoryService {
-  private models: Models;
-
-  constructor(models: Models) {
-    this.models = models;
-  }
-
-  // CREATE
+  
   create = async (data: {
     name: string;
+    industry: string;
     description?: string;
-    parentId?: number;
+    parent_id?: string;
   }) => {
-    return await this.models.JobCategory.create(data);
+    return await JobCategory.create(data);
   };
 
-  // READ ALL
+  
   fetchAll = async () => {
-    return await this.models.JobCategory.findAll();
+    return await JobCategory.findAll({
+      // include: [
+      //   {
+      //     model: JobCategory,
+      //     as: "parent",
+      //   },
+      //   {
+      //     model: JobCategory,
+      //     as: "children",
+      //   },
+      // ],
+      // order: [["createdAt", "DESC"]],
+    });
   };
 
-  // READ ONE
-  fetchById = async (id: number) => {
-    const category = await this.models.JobCategory.findByPk(id);
+  
+  fetchById = async (id: string) => {
+    const category = await JobCategory.findByPk(id, {
+      include: [
+        {
+          model: JobCategory,
+          as: "parent",
+        },
+        {
+          model: JobCategory,
+          as: "children",
+        },
+      ],
+    });
+
     if (!category) {
       throw new Error("Job category not found");
     }
+
     return category;
   };
 
-  // UPDATE
+  
   update = async (
-    id: number,
+    id: string,
     data: {
       name?: string;
+      industry?: string;
       description?: string;
-      parentId?: number;
+      parent_id?: string;
     }
   ) => {
     const category = await this.fetchById(id);
@@ -48,8 +65,8 @@ export class JobCategoryService {
     return category;
   };
 
-  // DELETE
-  delete = async (id: number) => {
+  
+  delete = async (id: string) => {
     const category = await this.fetchById(id);
     await category.destroy();
     return true;

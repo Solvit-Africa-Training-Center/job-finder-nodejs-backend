@@ -1,25 +1,28 @@
 import { Request, Response } from "express";
 import { JobLevelService } from "../services";
 
-export class JobLevelController {
+const service = new JobLevelService();
 
+export class JobLevelController {
+  // CREATE
   create = async (req: Request, res: Response) => {
     try {
-      const models = req.app.get("models");
-      const service = new JobLevelService(models);
+      const { name, description } = req.body;
 
-      const jobLevel = await service.create(req.body);
+      if (!name) {
+        return res.status(400).json({ message: "Name is required" });
+      }
+
+      const jobLevel = await service.create({ name, description });
       res.status(201).json(jobLevel);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
   };
 
-  getAll = async (req: Request, res: Response) => {
+  // READ ALL
+  getAll = async (_req: Request, res: Response) => {
     try {
-      const models = req.app.get("models");
-      const service = new JobLevelService(models);
-
       const jobLevels = await service.fetchAll();
       res.status(200).json(jobLevels);
     } catch (error: any) {
@@ -27,40 +30,36 @@ export class JobLevelController {
     }
   };
 
+  // READ ONE
   getOne = async (req: Request, res: Response) => {
     try {
-      const models = req.app.get("models");
-      const service = new JobLevelService(models);
+      const id = req.params.id; // UUID string
 
-      const jobLevel = await service.fetchById(Number(req.params.id));
+      const jobLevel = await service.fetchById(id);
       res.status(200).json(jobLevel);
     } catch (error: any) {
       res.status(404).json({ message: error.message });
     }
   };
 
+  // UPDATE
   update = async (req: Request, res: Response) => {
     try {
-      const models = req.app.get("models");
-      const service = new JobLevelService(models);
+      const id = req.params.id; // UUID string
 
-      const jobLevel = await service.update(
-        Number(req.params.id),
-        req.body
-      );
-
+      const jobLevel = await service.update(id, req.body);
       res.status(200).json(jobLevel);
     } catch (error: any) {
       res.status(400).json({ message: error.message });
     }
   };
 
+  // DELETE
   delete = async (req: Request, res: Response) => {
     try {
-      const models = req.app.get("models");
-      const service = new JobLevelService(models);
+      const id = req.params.id; // UUID string
 
-      await service.delete(Number(req.params.id));
+      await service.delete(id);
       res.status(204).send();
     } catch (error: any) {
       res.status(404).json({ message: error.message });

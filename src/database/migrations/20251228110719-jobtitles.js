@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('JobCategories', {
+    await queryInterface.createTable('JobTitles', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.fn('gen_random_uuid'),
@@ -16,25 +16,31 @@ module.exports = {
         allowNull: false,
       },
 
-      industry: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-
       description: {
         type: Sequelize.TEXT,
         allowNull: true,
       },
 
-      parentId: {
+      jobCategoryId: {
         type: Sequelize.UUID,
-        allowNull: true,
+        allowNull: false,
         references: {
           model: 'JobCategories',
           key: 'id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'SET NULL',
+        onDelete: 'RESTRICT',
+      },
+
+      jobLevelId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'JobLevels',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
       },
 
       createdAt: {
@@ -49,7 +55,6 @@ module.exports = {
         defaultValue: Sequelize.fn('NOW'),
       },
 
-      
       deletedAt: {
         allowNull: true,
         type: Sequelize.DATE,
@@ -57,7 +62,7 @@ module.exports = {
     });
   },
 
-  async down(queryInterface) {
-    await queryInterface.dropTable('JobCategories');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('JobTitles');
   },
 };

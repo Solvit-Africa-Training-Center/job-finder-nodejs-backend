@@ -53,6 +53,13 @@ export const connectToDb = async () => {
 
     const models = allModel(sequalize);
 
+    Object.values(models).forEach((model: any) => {
+  if (model.associate) {
+    model.associate(models);
+  }
+});
+
+
     return { sequalize, ...models };
   } catch (error) {
     console.error('Error connecting to database: ', error);

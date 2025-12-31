@@ -3,50 +3,58 @@
 import { Model, Sequelize, DataTypes, Optional } from 'sequelize';
 
 interface JobLevelAttributes {
-  id?: number;
+  id: string;
   name: string;
-  order?: number;
   description?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  deletedAt?: Date;
 }
 
 interface JobLevelCreationAttributes
-  extends Optional<JobLevelAttributes, 'id'> {}
+  extends Optional<JobLevelAttributes, 'id' | 'createdAt' | 'updatedAt'> {}
 
-export default (
-  sequelize: Sequelize,
-  dataTypes: typeof DataTypes
-) => {
-  class JobLevel
-    extends Model<JobLevelAttributes, JobLevelCreationAttributes>
-    implements JobLevelAttributes
-  {
-    public id!: number;
-    public name!: string;
-    public order?: number;
-    public description?: string;
+export class JobLevel
+  extends Model<JobLevelAttributes, JobLevelCreationAttributes>
+  implements JobLevelAttributes
+{
+  public id!: string;
+  public name!: string;
+  public description?: string;
 
-    static associate(models: any) {
-      // define association here
-    }
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
+
+  static associate(models: any) {
+    JobLevel.hasMany(models.JobTitle, {
+      foreignKey: 'jobLevelId',
+      as: 'jobTitles',
+    });
   }
+}
 
+export default (sequelize: Sequelize) => {
   JobLevel.init(
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+
       name: {
-        type: dataTypes.STRING,
+        type: DataTypes.STRING,
         allowNull: false,
       },
-      order: {
-        type: dataTypes.INTEGER,
-      },
+
       description: {
-        type: dataTypes.TEXT,
+        type: DataTypes.TEXT,
       },
     },
     {
       sequelize,
-      modelName: 'JobLevel',
       tableName: 'JobLevels',
+      modelName: 'JobLevel',
       timestamps: true,
     }
   );

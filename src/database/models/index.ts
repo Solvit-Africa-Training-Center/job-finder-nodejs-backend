@@ -1,7 +1,13 @@
 import { Sequelize } from "sequelize";
-import jobcategoryinit from "./jobcategory";
+import jobcategoryinit, { JobCategory } from "./jobcategory";
+import joblevelinit, { JobLevel } from "./joblevel";
+import jobtitleinit, { JobTitle } from "./jobtitle";
 
+
+
+interface Models {JobCategory: typeof JobCategory, JobLevel: typeof JobLevel, JobTitle: typeof JobTitle}
 export const allModel = (sequelize: Sequelize) => {
-  const jobcategory = jobcategoryinit(sequelize);
-  return { JobCategory: jobcategory };
+   
+  return { JobCategory: jobcategoryinit(sequelize), JobLevel: joblevelinit(sequelize), JobTitle: jobtitleinit(sequelize) };
+
 };

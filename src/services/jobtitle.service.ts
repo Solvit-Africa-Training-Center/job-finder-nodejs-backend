@@ -1,42 +1,65 @@
-import { ModelStatic, Model } from "sequelize";
-
-interface Models {
-  JobTitle: ModelStatic<Model>;
-}
+import { JobTitle } from "../database/models/jobtitle";
+import { JobCategory } from "../database/models/jobcategory";
+import { JobLevel } from "../database/models/joblevel";
 
 export class JobTitleService {
-  private models: Models;
-
-  constructor(models: Models) {
-    this.models = models;
-  }
-
+  
   create = async (data: {
     name: string;
     description?: string;
+    jobCategoryId: string;
+    jobLevelId: string;
   }) => {
-    return await this.models.JobTitle.create(data);
+    return await JobTitle.create(data);
   };
 
+  
   fetchAll = async () => {
-    return await this.models.JobTitle.findAll({
-      order: [["name", "ASC"]],
+    return await JobTitle.findAll({
+      order: [["createdAt", "DESC"]],
+      include: [
+        {
+          model: JobCategory,
+          as: "category",
+        },
+        {
+          model: JobLevel,
+          as: "level",
+        },
+      ],
     });
   };
 
-  fetchById = async (id: number) => {
-    const jobTitle = await this.models.JobTitle.findByPk(id);
+  
+  fetchById = async (id: string) => {
+    const jobTitle = await JobTitle.findByPk(id, {
+      include: [
+        {
+          model: JobCategory,
+          as: "category",
+        },
+        {
+          model: JobLevel,
+          as: "level",
+        },
+      ],
+    });
+
     if (!jobTitle) {
       throw new Error("Job title not found");
     }
+
     return jobTitle;
   };
 
+  
   update = async (
-    id: number,
+    id: string,
     data: {
       name?: string;
       description?: string;
+      jobCategoryId?: string;
+      jobLevelId?: string;
     }
   ) => {
     const jobTitle = await this.fetchById(id);
@@ -44,7 +67,8 @@ export class JobTitleService {
     return jobTitle;
   };
 
-  delete = async (id: number) => {
+  
+  delete = async (id: string) => {
     const jobTitle = await this.fetchById(id);
     await jobTitle.destroy();
     return true;

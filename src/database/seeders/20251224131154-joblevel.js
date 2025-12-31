@@ -2,51 +2,51 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.bulkInsert(
       'JobLevels',
       [
         {
           name: 'Internship',
-          order: 1,
           description: 'Entry-level internship positions',
           createdAt: new Date(),
           updatedAt: new Date(),
+          deletedAt: null,
         },
         {
           name: 'Junior',
-          order: 2,
           description: 'Junior or associate level positions',
           createdAt: new Date(),
           updatedAt: new Date(),
+          deletedAt: null,
         },
         {
           name: 'Mid-Level',
-          order: 3,
           description: 'Mid-level professional positions',
           createdAt: new Date(),
           updatedAt: new Date(),
+          deletedAt: null,
         },
         {
           name: 'Senior',
-          order: 4,
           description: 'Senior and lead positions',
           createdAt: new Date(),
           updatedAt: new Date(),
+          deletedAt: null,
         },
         {
           name: 'Manager',
-          order: 5,
           description: 'Management and leadership roles',
           createdAt: new Date(),
           updatedAt: new Date(),
+          deletedAt: null,
         },
       ],
       {}
     );
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.bulkDelete('JobLevels', null, {});
   },
 };

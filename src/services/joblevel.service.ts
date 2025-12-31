@@ -1,43 +1,37 @@
-import { ModelStatic, Model } from "sequelize";
-
-interface Models {
-  JobLevel: ModelStatic<Model>;
-}
+import { JobLevel } from "../database/models/joblevel";
 
 export class JobLevelService {
-  private models: Models;
-
-  constructor(models: Models) {
-    this.models = models;
-  }
-
+  
   create = async (data: {
     name: string;
-    order?: number;
     description?: string;
   }) => {
-    return await this.models.JobLevel.create(data);
+    return await JobLevel.create(data);
   };
 
+  
   fetchAll = async () => {
-    return await this.models.JobLevel.findAll({
-      order: [["order", "ASC"]],
+    return await JobLevel.findAll({
+      order: [["name", "ASC"]],
     });
   };
 
-  fetchById = async (id: number) => {
-    const jobLevel = await this.models.JobLevel.findByPk(id);
+  
+  fetchById = async (id: string) => {
+    const jobLevel = await JobLevel.findByPk(id);
+
     if (!jobLevel) {
       throw new Error("Job level not found");
     }
+
     return jobLevel;
   };
 
+ 
   update = async (
-    id: number,
+    id: string,
     data: {
       name?: string;
-      order?: number;
       description?: string;
     }
   ) => {
@@ -46,7 +40,8 @@ export class JobLevelService {
     return jobLevel;
   };
 
-  delete = async (id: number) => {
+  
+  delete = async (id: string) => {
     const jobLevel = await this.fetchById(id);
     await jobLevel.destroy();
     return true;
