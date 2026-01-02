@@ -7,13 +7,13 @@ module.exports = {
       'sampleusers',
       [
         {
-          email: 'admin@example.com',
+          email: 'admin@solvit.africa',
           password: 'admin123',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
-          email: 'user@example.com',
+          email: 'user@solvit.africa',
           password: 'user123',
           createdAt: new Date(),
           updatedAt: new Date(),

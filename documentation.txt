@@ -1,0 +1,57 @@
+# Email & Notification System Documentation
+
+## 1. Overview
+A comprehensive notification system that handles in-app notifications and email alerts with smart delay logic.
+
+## 2. Configuration Summary
+- **Email Service**: Gmail SMTP (smtp.gmail.com:587)
+- **Sender**: innocentntakir@gmail.com
+- **Login URL**: http://localhost:3000/login (Served by this backend)
+- **Email Auth**: Gmail App Password (brlehotxvehmmznr)
+
+## 3. How to Test (1 to 6)
+Use these `curl` commands in your terminal to test each email type. All emails will be sent immediately to your Gmail.
+
+### 1. New Message
+"You have a new message from [Name]"
+```bash
+curl -X POST http://localhost:3000/api/v1/notifications/direct-test -H "Content-Type: application/json" -d "{\"email\": \"innocentntakir@gmail.com\", \"type\": \"new-message\", \"metadata\": {\"senderName\": \"John Doe\", \"messagePreview\": \"I am interested in your profile...\"}}"
+```
+
+### 2. Application Status Changed
+"Your application status for [Job] is now [Status]"
+```bash
+curl -X POST http://localhost:3000/api/v1/notifications/direct-test -H "Content-Type: application/json" -d "{\"email\": \"innocentntakir@gmail.com\", \"type\": \"application-status\", \"metadata\": {\"jobTitle\": \"Software Engineer\", \"companyName\": \"Solvit Africa\", \"status\": \"Shortlisted\"}}"
+```
+
+### 3. New Job Alert
+"A new job matching your profile: [Job]"
+```bash
+curl -X POST http://localhost:3000/api/v1/notifications/direct-test -H "Content-Type: application/json" -d "{\"email\": \"innocentntakir@gmail.com\", \"type\": \"job-alert\", \"metadata\": {\"jobTitle\": \"UI/UX Designer\", \"companyName\": \"Creative Hub\", \"location\": \"Kigali\", \"salaryRange\": \"$1000 - $1500\"}}"
+```
+
+### 4. Job Approved/Rejected
+For recruiters: "Your job posting [Job] has been [Result]"
+```bash
+curl -X POST http://localhost:3000/api/v1/notifications/direct-test -H "Content-Type: application/json" -d "{\"email\": \"innocentntakir@gmail.com\", \"type\": \"job-status\", \"metadata\": {\"jobTitle\": \"Project Manager\", \"result\": \"Approved\", \"feedback\": \"Great job description!\"}}"
+```
+
+### 5. Welcome Email
+"Welcome to our platform!"
+```bash
+curl -X POST http://localhost:3000/api/v1/notifications/direct-test -H "Content-Type: application/json" -d "{\"email\": \"innocentntakir@gmail.com\", \"type\": \"welcome\"}"
+```
+
+### 6. Email Verification
+"Verify your email address - Code: [Code]"
+```bash
+curl -X POST http://localhost:3000/api/v1/notifications/direct-test -H "Content-Type: application/json" -d "{\"email\": \"innocentntakir@gmail.com\", \"type\": \"verification\", \"metadata\": {\"verificationCode\": \"123456\"}}"
+```
+
+---
+
+## 4. Components
+1. **Login Page**: `http://localhost:3000/login` (Modern UI for testing links)
+2. **Email Templates**: `src/templates/email/`
+3. **Queue System**: Processed via Bull/Redis (for 5-min delayed logic)
+4. **Direct Test**: Endpoint `notifications/direct-test` bypasses the 5-min delay for easy testing.

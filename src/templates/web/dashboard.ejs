@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Job Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 600px;
+            width: 100%;
+            border: 1px solid #334155;
+            text-align: center;
+        }
+
+        h1 {
+            color: #6366f1;
+            margin: 0 0 1.5rem 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .stat {
+            background: #334155;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .stat h3 {
+            margin: 0;
+            font-size: 2rem;
+            color: #38bdf8;
+        }
+
+        .stat p {
+            margin: 0.5rem 0 0 0;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h1>Dashboard Overview</h1>
+        <div class="grid">
+            <div class="stat">
+                <h3>12</h3>
+                <p>Active Jobs</p>
+            </div>
+            <div class="stat">
+                <h3>45</h3>
+                <p>Applications</p>
+            </div>
+            <div class="stat">
+                <h3>3</h3>
+                <p>Interviews</p>
+            </div>
+            <div class="stat">
+                <h3>8</h3>
+                <p>Messages</p>
+            </div>
+        </div>
+        <p>This is a simulated dashboard for email testing.</p>
+        <a href="/login" style="color: #6366f1; text-decoration: none; margin-top: 1rem; display: inline-block;">&larr;
+            Logout</a>
+    </div>
+</body>
+
+</html>

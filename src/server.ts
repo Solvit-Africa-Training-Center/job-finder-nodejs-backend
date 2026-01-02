@@ -24,11 +24,33 @@ const startApp = async () => {
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
+    // view engine setup
+    app.set('view engine', 'ejs');
+    app.set('views', './src/templates/web');
+
     // database connection
     await connectToDb();
 
     // swagger documentation
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+    // web routes
+    app.get('/login', (req, res) => {
+      res.render('login');
+    });
+    app.get('/messages/:id', (req, res) => {
+      res.render('message');
+    });
+    app.get('/applications/:id', (req, res) => {
+      res.render('application');
+    });
+    app.get('/dashboard', (req, res) => {
+      res.render('dashboard');
+    });
+    // Fallback for any other ID-based route to login
+    app.get('/jobs/:id', (req, res) => {
+      res.render('login');
+    });
 
     // routes
     app.use(configs.prefix, mainRoute);

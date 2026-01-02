@@ -1,0 +1,15 @@
+<p>Hello <span class="highlight">
+        <%= recruiterName %>
+    </span>,</p>
+<p>Your job posting for <span class="highlight">
+        <%= jobTitle %>
+    </span> has been <span class="highlight">
+        <%= result %>
+    </span> by the administration.</p>
+<% if (reason) { %>
+    <p><strong>Reason:</strong>
+        <%= reason %>
+    </p>
+    <% } %>
+        <a href="<%= dashboardUrl %>" class="button">Go to Dashboard</a>
+        <p>Best regards,<br>The Job Finder Team</p>
