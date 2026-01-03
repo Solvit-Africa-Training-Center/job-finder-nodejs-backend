@@ -178,7 +178,469 @@ components:
           type: string
           format: uuid
 
+    Skill:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440001"
+        name:
+          type: string
+          example: "JavaScript"
+        description:
+          type: string
+          example: "JavaScript programming language"
+        category:
+          type: string
+          example: "Programming"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    SkillInput:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          example: "JavaScript"
+        description:
+          type: string
+          example: "JavaScript programming language"
+        category:
+          type: string
+          example: "Programming"
+
+    CandidateProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        userId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+          example: "John"
+        lastName:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        phone:
+          type: string
+          example: "+1234567890"
+        profilePictureUrl:
+          type: string
+          example: "https://example.com/profile.jpg"
+        bio:
+          type: string
+          example: "Passionate software developer"
+        headline:
+          type: string
+          example: "Senior Software Engineer"
+        location:
+          type: string
+          example: "San Francisco, CA"
+        resumeUrl:
+          type: string
+          example: "https://example.com/resume.pdf"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CandidateProfileInput:
+      type: object
+      required:
+        - userId
+        - firstName
+        - lastName
+        - email
+        - phone
+      properties:
+        userId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+          example: "John"
+        lastName:
+          type: string
+          example: "Doe"
+        email:
+          type: string
+          format: email
+          example: "john.doe@example.com"
+        phone:
+          type: string
+          example: "+1234567890"
+        profilePictureUrl:
+          type: string
+        bio:
+          type: string
+        headline:
+          type: string
+        location:
+          type: string
+        resumeUrl:
+          type: string
+
+    CandidateSkill:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        candidateProfileId:
+          type: string
+          format: uuid
+        skillId:
+          type: string
+          format: uuid
+        proficiencyLevel:
+          type: string
+          enum: [beginner, intermediate, advanced, expert]
+          example: "expert"
+        yearsOfExperience:
+          type: integer
+          example: 5
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CandidateSkillInput:
+      type: object
+      required:
+        - skillId
+        - proficiencyLevel
+      properties:
+        skillId:
+          type: string
+          format: uuid
+        proficiencyLevel:
+          type: string
+          enum: [beginner, intermediate, advanced, expert]
+          example: "expert"
+        yearsOfExperience:
+          type: integer
+          example: 5
+
+    Education:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        candidateProfileId:
+          type: string
+          format: uuid
+        institution:
+          type: string
+          example: "Stanford University"
+        degree:
+          type: string
+          example: "Bachelor"
+        fieldOfStudy:
+          type: string
+          example: "Computer Science"
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        isCurrentlyStudying:
+          type: boolean
+          example: false
+        grade:
+          type: string
+          example: "3.8"
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    EducationInput:
+      type: object
+      required:
+        - institution
+        - degree
+        - fieldOfStudy
+        - startDate
+        - isCurrentlyStudying
+      properties:
+        institution:
+          type: string
+          example: "Stanford University"
+        degree:
+          type: string
+          example: "Bachelor"
+        fieldOfStudy:
+          type: string
+          example: "Computer Science"
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        isCurrentlyStudying:
+          type: boolean
+          example: false
+        grade:
+          type: string
+        description:
+          type: string
+
+    Experience:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        candidateProfileId:
+          type: string
+          format: uuid
+        jobTitle:
+          type: string
+          example: "Senior Software Engineer"
+        company:
+          type: string
+          example: "Tech Corp"
+        location:
+          type: string
+          example: "San Francisco, CA"
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        isCurrentlyWorking:
+          type: boolean
+          example: true
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ExperienceInput:
+      type: object
+      required:
+        - jobTitle
+        - company
+        - startDate
+        - isCurrentlyWorking
+      properties:
+        jobTitle:
+          type: string
+          example: "Senior Software Engineer"
+        company:
+          type: string
+          example: "Tech Corp"
+        location:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        isCurrentlyWorking:
+          type: boolean
+          example: true
+        description:
+          type: string
+
+    SavedJob:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        candidateProfileId:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        isPinned:
+          type: boolean
+          example: false
+        appliedDate:
+          type: string
+          format: date
+        applicationStatus:
+          type: string
+          enum: [not_applied, applied, rejected, accepted, offer_received]
+          example: "not_applied"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    SavedJobInput:
+      type: object
+      required:
+        - jobId
+      properties:
+        jobId:
+          type: string
+          format: uuid
+        isPinned:
+          type: boolean
+          example: false
+        appliedDate:
+          type: string
+          format: date
+        applicationStatus:
+          type: string
+          enum: [not_applied, applied, rejected, accepted, offer_received]
+
+    JobOffer:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        candidateProfileId:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        offerDate:
+          type: string
+          format: date
+        salary:
+          type: number
+          format: decimal
+          example: 150000
+        currency:
+          type: string
+          example: "USD"
+        position:
+          type: string
+          example: "Senior Software Engineer"
+        company:
+          type: string
+          example: "Tech Corp"
+        offerStatus:
+          type: string
+          enum: [pending, accepted, rejected, expired]
+          example: "pending"
+        expiryDate:
+          type: string
+          format: date
+        terms:
+          type: string
+        notes:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    JobOfferInput:
+      type: object
+      required:
+        - jobId
+        - position
+        - company
+        - offerDate
+      properties:
+        jobId:
+          type: string
+          format: uuid
+        position:
+          type: string
+          example: "Senior Software Engineer"
+        company:
+          type: string
+          example: "Tech Corp"
+        offerDate:
+          type: string
+          format: date
+        salary:
+          type: number
+          format: decimal
+          example: 150000
+        currency:
+          type: string
+          example: "USD"
+        offerStatus:
+          type: string
+          enum: [pending, accepted, rejected, expired]
+        expiryDate:
+          type: string
+          format: date
+        terms:
+          type: string
+        notes:
+          type: string
+
+    JobOfferStatusUpdate:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [pending, accepted, rejected, expired]
+          example: "accepted"
+
+    ApplicationStatusUpdate:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: [not_applied, applied, rejected, accepted, offer_received]
+          example: "applied"
+
 tags:
+  - name: Candidates
+    description: Candidate profile management
+  - name: Candidate Skills
+    description: Candidate skills management
+  - name: Candidate Education
+    description: Candidate education management
+  - name: Candidate Experience
+    description: Candidate work experience management
+  - name: Candidate Jobs
+    description: Candidate job saved and applications management
+  - name: Candidate Offers
+    description: Candidate job offers management
+  - name: Skills
+    description: Skills master list management
   - name: FAQs
     description: Frequently Asked Questions management
   - name: Static Pages
@@ -750,4 +1212,1793 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
- 
+
+  /candidates:
+    post:
+      tags:
+        - Candidates
+      summary: Create a new candidate profile
+      description: Create a new candidate profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileInput'
+      responses:
+        '201':
+          description: Candidate profile created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Candidate profile created successfully"
+                  data:
+                    $ref: '#/components/schemas/CandidateProfile'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Candidates
+      summary: Get all candidate profiles
+      description: Retrieve all candidate profiles
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CandidateProfile'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/profile/{id}:
+    get:
+      tags:
+        - Candidates
+      summary: Get candidate profile by ID
+      description: Retrieve a specific candidate profile by its ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/CandidateProfile'
+        '404':
+          description: Candidate profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/user/{userId}:
+    get:
+      tags:
+        - Candidates
+      summary: Get candidate profile by User ID
+      description: Retrieve candidate profile by User ID
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: User ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/CandidateProfile'
+        '404':
+          description: Candidate profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{id}:
+    patch:
+      tags:
+        - Candidates
+      summary: Update candidate profile
+      description: Update an existing candidate profile
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateProfileInput'
+      responses:
+        '200':
+          description: Candidate profile updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Candidate profile updated successfully"
+                  data:
+                    $ref: '#/components/schemas/CandidateProfile'
+        '404':
+          description: Candidate profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Candidates
+      summary: Delete candidate profile
+      description: Delete a candidate profile
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Candidate profile deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Candidate profile deleted successfully"
+        '404':
+          description: Candidate profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/skills:
+    post:
+      tags:
+        - Candidate Skills
+      summary: Add skill to candidate
+      description: Add a skill to candidate profile
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateSkillInput'
+      responses:
+        '201':
+          description: Skill added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Skill added successfully"
+                  data:
+                    $ref: '#/components/schemas/CandidateSkill'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Candidate Skills
+      summary: Get all candidate skills
+      description: Retrieve all skills for a candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CandidateSkill'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/skills/{skillId}:
+    patch:
+      tags:
+        - Candidate Skills
+      summary: Update candidate skill
+      description: Update a candidate skill proficiency level and experience
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+        - in: path
+          name: skillId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Skill ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CandidateSkillInput'
+      responses:
+        '200':
+          description: Skill updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Skill updated successfully"
+                  data:
+                    $ref: '#/components/schemas/CandidateSkill'
+        '404':
+          description: Candidate skill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Candidate Skills
+      summary: Remove skill from candidate
+      description: Remove a skill from candidate profile
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+        - in: path
+          name: skillId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Skill ID
+      responses:
+        '200':
+          description: Skill removed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Skill removed successfully"
+        '404':
+          description: Candidate skill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/education:
+    post:
+      tags:
+        - Candidate Education
+      summary: Add education record
+      description: Add an education record to candidate profile
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EducationInput'
+      responses:
+        '201':
+          description: Education record added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Education record added successfully"
+                  data:
+                    $ref: '#/components/schemas/Education'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Candidate Education
+      summary: Get all education records
+      description: Retrieve all education records for a candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Education'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/education/{educationId}:
+    patch:
+      tags:
+        - Candidate Education
+      summary: Update education record
+      description: Update an education record
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+        - in: path
+          name: educationId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Education ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EducationInput'
+      responses:
+        '200':
+          description: Education record updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Education record updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Education'
+        '404':
+          description: Education record not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Candidate Education
+      summary: Delete education record
+      description: Delete an education record
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+        - in: path
+          name: educationId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Education ID
+      responses:
+        '200':
+          description: Education record deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Education record deleted successfully"
+        '404':
+          description: Education record not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/experience:
+    post:
+      tags:
+        - Candidate Experience
+      summary: Add experience record
+      description: Add a work experience record to candidate profile
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperienceInput'
+      responses:
+        '201':
+          description: Experience record added successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Experience record added successfully"
+                  data:
+                    $ref: '#/components/schemas/Experience'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Candidate Experience
+      summary: Get all experience records
+      description: Retrieve all work experience records for a candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Experience'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/experience/{experienceId}:
+    patch:
+      tags:
+        - Candidate Experience
+      summary: Update experience record
+      description: Update a work experience record
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+        - in: path
+          name: experienceId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Experience ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExperienceInput'
+      responses:
+        '200':
+          description: Experience record updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Experience record updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Experience'
+        '404':
+          description: Experience record not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Candidate Experience
+      summary: Delete experience record
+      description: Delete a work experience record
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+        - in: path
+          name: experienceId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Experience ID
+      responses:
+        '200':
+          description: Experience record deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Experience record deleted successfully"
+        '404':
+          description: Experience record not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/jobs/save:
+    post:
+      tags:
+        - Candidate Jobs
+      summary: Save a job
+      description: Save or bookmark a job
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SavedJobInput'
+      responses:
+        '201':
+          description: Job saved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Job saved successfully"
+                  data:
+                    $ref: '#/components/schemas/SavedJob'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/jobs/{jobId}/save:
+    delete:
+      tags:
+        - Candidate Jobs
+      summary: Unsave a job
+      description: Remove a saved job
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Job ID
+      responses:
+        '200':
+          description: Job unsaved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Job unsaved successfully"
+        '404':
+          description: Saved job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/jobs/saved:
+    get:
+      tags:
+        - Candidate Jobs
+      summary: Get saved jobs
+      description: Retrieve all saved jobs for a candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SavedJob'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/jobs/pinned:
+    get:
+      tags:
+        - Candidate Jobs
+      summary: Get pinned jobs
+      description: Retrieve all pinned jobs for a candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SavedJob'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/jobs/apply:
+    post:
+      tags:
+        - Candidate Jobs
+      summary: Apply for a job
+      description: Apply for a specific job
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SavedJobInput'
+      responses:
+        '201':
+          description: Application submitted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Application submitted successfully"
+                  data:
+                    $ref: '#/components/schemas/SavedJob'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/jobs/applied:
+    get:
+      tags:
+        - Candidate Jobs
+      summary: Get applied jobs
+      description: Retrieve all jobs that candidate has applied for
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SavedJob'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/jobs/{jobId}/status:
+    patch:
+      tags:
+        - Candidate Jobs
+      summary: Update application status
+      description: Update the status of a job application
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+        - in: path
+          name: jobId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Job ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationStatusUpdate'
+      responses:
+        '200':
+          description: Application status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Application status updated successfully"
+                  data:
+                    $ref: '#/components/schemas/SavedJob'
+        '404':
+          description: Job application not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/offers:
+    post:
+      tags:
+        - Candidate Offers
+      summary: Create job offer
+      description: Create a new job offer for a candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobOfferInput'
+      responses:
+        '201':
+          description: Job offer created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Job offer created successfully"
+                  data:
+                    $ref: '#/components/schemas/JobOffer'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Candidate Offers
+      summary: Get all offers for candidate
+      description: Retrieve all job offers for a specific candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobOffer'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/offers/{offerId}:
+    get:
+      tags:
+        - Candidate Offers
+      summary: Get specific offer
+      description: Retrieve a specific job offer by ID
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Offer ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/JobOffer'
+        '404':
+          description: Job offer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Candidate Offers
+      summary: Update job offer
+      description: Update an existing job offer
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Offer ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobOfferInput'
+      responses:
+        '200':
+          description: Job offer updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Job offer updated successfully"
+                  data:
+                    $ref: '#/components/schemas/JobOffer'
+        '404':
+          description: Job offer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Candidate Offers
+      summary: Delete job offer
+      description: Delete a job offer
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Offer ID
+      responses:
+        '200':
+          description: Job offer deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Job offer deleted successfully"
+        '404':
+          description: Job offer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/offers/{offerId}/status:
+    patch:
+      tags:
+        - Candidate Offers
+      summary: Update offer status
+      description: Update the status of a job offer (pending, accepted, rejected, expired)
+      parameters:
+        - in: path
+          name: offerId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Offer ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobOfferStatusUpdate'
+      responses:
+        '200':
+          description: Offer status updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Offer status updated successfully"
+                  data:
+                    $ref: '#/components/schemas/JobOffer'
+        '404':
+          description: Job offer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/offers/accepted:
+    get:
+      tags:
+        - Candidate Offers
+      summary: Get accepted offers
+      description: Retrieve all accepted job offers for a candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobOffer'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /candidates/{candidateProfileId}/offers/pending:
+    get:
+      tags:
+        - Candidate Offers
+      summary: Get pending offers
+      description: Retrieve all pending job offers for a candidate
+      parameters:
+        - in: path
+          name: candidateProfileId
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Candidate Profile ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/JobOffer'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /skills:
+    post:
+      tags:
+        - Skills
+      summary: Create a new skill
+      description: Create a new skill in the master list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillInput'
+      responses:
+        '201':
+          description: Skill created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 201
+                  message:
+                    type: string
+                    example: "Skill created successfully"
+                  data:
+                    $ref: '#/components/schemas/Skill'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Skills
+      summary: Get all skills
+      description: Retrieve all skills from the master list
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Skill'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /skills/{id}:
+    get:
+      tags:
+        - Skills
+      summary: Get skill by ID
+      description: Retrieve a specific skill by its ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Skill ID
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    $ref: '#/components/schemas/Skill'
+        '404':
+          description: Skill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    patch:
+      tags:
+        - Skills
+      summary: Update skill
+      description: Update an existing skill
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Skill ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SkillInput'
+      responses:
+        '200':
+          description: Skill updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Skill updated successfully"
+                  data:
+                    $ref: '#/components/schemas/Skill'
+        '404':
+          description: Skill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Skills
+      summary: Delete skill
+      description: Delete a skill from the master list
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: Skill ID
+      responses:
+        '200':
+          description: Skill deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Skill deleted successfully"
+        '404':
+          description: Skill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /skills/category/{category}:
+    get:
+      tags:
+        - Skills
+      summary: Get skills by category
+      description: Retrieve all skills in a specific category
+      parameters:
+        - in: path
+          name: category
+          required: true
+          schema:
+            type: string
+          description: Skill category
+          example: "Programming"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  statusCode:
+                    type: integer
+                    example: 200
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Skill'
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
