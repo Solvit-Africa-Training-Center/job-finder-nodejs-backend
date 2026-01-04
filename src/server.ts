@@ -11,6 +11,27 @@ import mainRoute from './routes';
 
 const app: Express = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/v1', mainRoute);
+
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
+  });
+});
+
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+  console.error('Error:', err);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal server error'
+  });
+});
+
 const startApp = async () => {
   try {
     // security middleware
@@ -43,7 +64,7 @@ const startApp = async () => {
       );
     });
   } catch (error) {
-    console.log('Error starting: ', error);
+   console.log('Error starting: ', error);
   }
 };
 
