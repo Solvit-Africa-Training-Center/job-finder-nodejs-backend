@@ -16,31 +16,31 @@ interface JobViewAttributes {
 interface JobViewCreationAttributes
   extends Optional<JobViewAttributes, 'id' | 'user_id' | 'user_agent' | 'viewed_at'> {}
 
-export const JobViewInit = (sequelize: Sequelize) => {
-  class JobView
-    extends Model<JobViewAttributes, JobViewCreationAttributes>
-    implements JobViewAttributes
-  {
-    public id!: string;
-    public job_id!: string;
-    public user_id?: string;
-    public ip_address!: string;
-    public user_agent?: string;
-    public viewed_at!: Date;
+class JobView
+  extends Model<JobViewAttributes, JobViewCreationAttributes>
+  implements JobViewAttributes
+{
+  public id!: string;
+  public job_id!: string;
+  public user_id?: string;
+  public ip_address!: string;
+  public user_agent?: string;
+  public viewed_at!: Date;
 
-    static associate(models: any) {
-      JobView.belongsTo(models.Job, {
-        foreignKey: 'job_id',
-        as: 'job',
-      });
+  static associate(models: any) {
+    JobView.belongsTo(models.Job, {
+      foreignKey: 'job_id',
+      as: 'job',
+    });
 
-    //   JobView.belongsTo(models.User, {
-    //     foreignKey: 'user_id',
-    //     as: 'user',
-    //   });
-    }
+  //   JobView.belongsTo(models.User, {
+  //     foreignKey: 'user_id',
+  //     as: 'user',
+  //   });
   }
+}
 
+export const JobViewInit = (sequelize: Sequelize) => {
   JobView.init(
     {
       id: {
@@ -91,3 +91,5 @@ export const JobViewInit = (sequelize: Sequelize) => {
 
   return JobView;
 };
+
+export default JobView;
