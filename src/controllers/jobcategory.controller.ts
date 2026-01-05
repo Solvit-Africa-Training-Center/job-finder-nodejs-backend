@@ -41,7 +41,7 @@ export class JobCategoryController {
   
   getOne = async (req: Request, res: Response) => {
     try {
-      const { id } = req.params; // ✅ string
+      const { id } = req.params; 
 
       const category = await service.fetchById(id);
       res.status(200).json(category);

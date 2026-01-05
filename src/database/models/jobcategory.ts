@@ -34,10 +34,7 @@ export class JobCategory
   public readonly deletedAt!: Date;
 
   static associate(models: any) {
-    JobCategory.hasMany(models.JobTitle, {
-      foreignKey: 'jobCategoryId',
-      as: 'jobTitles',
-    });
+    
 
     JobCategory.belongsTo(models.JobCategory, {
       foreignKey: 'parentId',

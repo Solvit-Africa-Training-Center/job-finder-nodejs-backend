@@ -2,10 +2,10 @@ import express, { Express } from "express";
 import { config as Dotenv } from "dotenv";
 Dotenv();
 
-import { configs } from "./config";
 import { connectToDb } from "./database";
 import mainRoute from "./routes";
 import { setupSwagger } from "./docs/swagger"; // ✅ ADD THIS
+import { configs } from "./config";
 
 const app: Express = express();
 
