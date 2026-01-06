@@ -1,29 +1,35 @@
 'use strict';
-import { DataTypes } from 'sequelize';
+
+const { timeStamp } = require('console');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('emailverificationstoken', {
-      id: {
-        type: DataTypes.UUID,
-        defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
+    await queryInterface.createTable(
+      'emailverificationstoken',
+      {
+        id: {
+          type: Sequelize.UUID,
+          defaultValue: Sequelize.UUIDV4,
+          primaryKey: true,
+        },
+        token: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          unique: true,
+        },
+        userId: {
+          type: Sequelize.UUID,
+          allowNull: false,
+        },
+        createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.fn('now'),
+        },
       },
-      token: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      userId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-      },
-      createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-      },
-    });
+      { timeStamp: false },
+    );
   },
 
   async down(queryInterface, Sequelize) {

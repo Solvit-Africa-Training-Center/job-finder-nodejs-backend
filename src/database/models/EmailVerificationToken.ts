@@ -1,10 +1,10 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
-interface EmailVerificationTokenAttributes {
-  id: string;
+export interface EmailVerificationTokenAttributes {
+  id?: string;
   token: string;
   userId: string;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export class EmailVerificationToken
@@ -44,7 +44,9 @@ export const initEmailVerificationTokenModel = (
     },
     {
       sequelize,
-      tableName: 'email_verification_tokens',
+      timestamps: false,
+      modelName: 'emailverificationstoken',
+      tableName: 'emailverificationstoken',
     },
   );
 
