@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import { config as Dotenv } from 'dotenv';
+import path from 'path';
 Dotenv();
 import { configs, swaggerDocument } from './config';
 import { connectToDb } from './database';
@@ -10,6 +11,11 @@ import { errorHandler, applyRateLimit } from './middlewares';
 import mainRoute from './routes';
 
 const app: Express = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 const startApp = async () => {
   try {
@@ -43,7 +49,8 @@ const startApp = async () => {
       );
     });
   } catch (error) {
-    console.log('Error starting: ', error);
+    console.error('Error starting app:', error);
+    process.exit(1);
   }
 };
 

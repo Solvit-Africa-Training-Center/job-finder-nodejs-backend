@@ -11,7 +11,7 @@ interface DatabaseConfigInterface {
 
 const config = databaseConnection() as DatabaseConfigInterface;
 
-let sequelize = new Sequelize({
+export let sequelize = new Sequelize({
   database: 'postgres',
   username: config.username,
   password: config.password,
