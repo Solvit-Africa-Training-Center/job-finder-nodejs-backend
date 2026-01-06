@@ -7,6 +7,16 @@ export class Conversation extends Model {
   public lastMessageAt!: Date;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  static associate(models: any) {
+    if (models.Message) {
+      Conversation.hasMany(models.Message, {
+        foreignKey: 'conversationId',
+        as: 'messages',
+        onDelete: 'CASCADE',
+      });
+    }
+  }
 }
 
 export const initConversationModel = (sequelize: Sequelize) => {
@@ -27,19 +37,6 @@ export const initConversationModel = (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
-
-  // The Trick: Use a callback or a late binding approach
-  // We use the internal sequelize.models to avoid passing undefined
-  // We do this inside a setTimeout so it happens AFTER index.ts finishes
-  setTimeout(() => {
-    if (sequelize.models.Message) {
-      Conversation.hasMany(sequelize.models.Message, {
-        foreignKey: 'conversationId',
-        as: 'messages',
-        onDelete: 'CASCADE',
-      });
-    }
-  }, 0);
 
   return Conversation;
 };

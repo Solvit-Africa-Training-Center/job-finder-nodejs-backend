@@ -8,6 +8,15 @@ export class Message extends Model {
   public isRead!: boolean;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+
+  static associate(models: any) {
+    if (models.Conversation) {
+      Message.belongsTo(models.Conversation, {
+        foreignKey: 'conversationId',
+        as: 'conversation',
+      });
+    }
+  }
 }
 
 export const initMessageModel = (sequelize: Sequelize) => {
@@ -29,16 +38,6 @@ export const initMessageModel = (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
-
-  // Use a timeout to ensure Conversation is fully initialized in the index.ts flow
-  setTimeout(() => {
-    if (sequelize.models.Conversation) {
-      Message.belongsTo(sequelize.models.Conversation, {
-        foreignKey: 'conversationId',
-        as: 'conversation',
-      });
-    }
-  }, 0);
 
   return Message;
 };
