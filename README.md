@@ -8,5 +8,6 @@ Configurations Tasks made:
 5. Configure Sequelize with TypeScript
 6. Setup database connection pooling
 7. Configure migrations & seeders
-8. Setup API versioning (/api/v1)
-9. Configure CORS, Helmet, rate limiting
+8. Setup request validation layer
+9. Setup API versioning (/api/v1)
+10. Configure CORS, Helmet, rate limiting

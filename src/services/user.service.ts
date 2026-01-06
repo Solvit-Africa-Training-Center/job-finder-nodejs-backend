@@ -1,4 +1,4 @@
-import { SampleUser } from '../database/models/sampleuser';
+import { SampleUser } from '../database/models';
 
 export class UserService {
   fetchAllUsers = async () => {

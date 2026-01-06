@@ -20,3 +20,5 @@ export const allModel = (sequelize: Sequelize): Models => {
     SampleUser,
   };
 };
+
+export * from './sampleuser';
