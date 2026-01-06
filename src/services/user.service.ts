@@ -1,7 +1,7 @@
 import { SampleUser } from '../database/models/sampleuser';
 
 export class UserService {
-  // ✅ Lister tous les users
+  
   fetchAllUsers = async () => {
     const users = await SampleUser.findAll({
       attributes: ['id', 'email', 'role', 'isActive', 'isBlocked', 'lastLoginAt'],
@@ -9,7 +9,7 @@ export class UserService {
     return users;
   };
 
-  // ✅ Bloquer un user
+  
   blockUser = async (userId: number) => {
     const user = await SampleUser.findByPk(userId);
     if (!user) throw new Error('User not found');
@@ -25,7 +25,7 @@ export class UserService {
     return user;
   };
 
-  // ✅ Débloquer un user
+  
   unblockUser = async (userId: number) => {
     const user = await SampleUser.findByPk(userId);
     if (!user) throw new Error('User not found');
@@ -37,4 +37,23 @@ export class UserService {
 
     return user;
   };
+
+  activateUser = async (userId: number) => {
+    const user = await SampleUser.findByPk(userId);
+    if (!user) throw new Error('User not found');
+
+    user.isActive = true;
+    await user.save();
+    return user;
+  };
+
+  deactivateUser = async (userId: number) => {
+    const user = await SampleUser.findByPk(userId);
+    if (!user) throw new Error('User not found');
+
+    user.isActive = false;
+    await user.save();
+    return user;
+  };
+
 }

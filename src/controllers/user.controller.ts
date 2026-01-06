@@ -36,4 +36,27 @@ export class UserController {
       res.status(400).json({ message });
     }
   };
+
+  // PATCH /users/:id/activate
+  activateUserController = async (req: Request, res: Response) => {
+    try {
+      const user = await userService.activateUser(Number(req.params.id));
+      res.status(200).json({ message: 'User activated', user });
+    } catch (e: unknown) {
+const message = e instanceof Error ? e.message : String(e);
+      res.status(400).json({ message });
+    }
+  };
+
+// PATCH /users/:id/deactivate
+  deactivateUserController = async (req: Request, res: Response) => {
+      try {
+        const user = await userService.deactivateUser(Number(req.params.id));
+        res.status(200).json({ message: 'User deactivated', user });
+      } catch (e: unknown) {
+       const message = e instanceof Error ? e.message : String(e);
+      res.status(400).json({ message });
+      }
+  };
+
 }
