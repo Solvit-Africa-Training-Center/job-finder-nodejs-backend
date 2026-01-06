@@ -1,0 +1,13 @@
+<p>Hello <span class="highlight">
+        <%= name %>
+    </span>,</p>
+<p>Thank you for registering with Job Finder. Please verify your email address to activate your account.</p>
+<div style="text-align: center; margin: 30px 0;">
+    <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #1a237e;">
+        <%= verificationCode %>
+    </span>
+</div>
+<p>Or click the button below:</p>
+<a href="<%= verificationUrl %>" class="button">Verify Email</a>
+<p>This code will expire in 24 hours.</p>
+<p>Best regards,<br>The Job Finder Team</p>
