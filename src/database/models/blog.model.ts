@@ -3,9 +3,8 @@ import { sequelize } from '../../config/database';
 import { BlogAttributes } from '../../types/blog.interface';
 import { getCurrentDate } from '../../utils/date.util';
 
-interface BlogCreationAttributes extends Optional<BlogAttributes, 'id' | 'postedDate' | 'imageUrl'> { }
-
-class Blog extends Model<BlogAttributes, BlogCreationAttributes> implements BlogAttributes {
+// Use Optional directly in the Model generic
+class Blog extends Model<BlogAttributes, Optional<BlogAttributes, 'id' | 'postedDate' | 'imageUrl'>> implements BlogAttributes {
   public id!: number;
   public title!: string;
   public content!: string;
@@ -19,7 +18,7 @@ class Blog extends Model<BlogAttributes, BlogCreationAttributes> implements Blog
 Blog.init(
   {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       autoIncrement: true,
       primaryKey: true,
     },

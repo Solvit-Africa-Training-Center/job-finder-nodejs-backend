@@ -2,16 +2,11 @@ import { Response } from 'express';
 import { BlogService } from '../services/blog.service';
 import { AuthRequest } from '../middlewares/mockAuth.middleware';
 import { ApiResponse } from '../utils/response.util';
-import {
-    createBlogSchema,
-    updateBlogSchema,
-    commentSchema
-} from '../validators/blog.validator';
+import { createBlogSchema, updateBlogSchema, commentSchema } from '../validators/blog.validator';
 
 const blogService = new BlogService();
 
 export class BlogController {
-
     async getAllBlogs(req: AuthRequest, res: Response) {
         try {
             const blogs = await blogService.getAllBlogs();
@@ -80,7 +75,7 @@ export class BlogController {
 
     async updateBlog(req: AuthRequest, res: Response) {
         try {
-            const blogId = parseInt(req.params.id);
+            const blogId = req.params.id;
 
             if (isNaN(blogId)) {
                 return ApiResponse.error(res, 'Invalid blog ID', 400);

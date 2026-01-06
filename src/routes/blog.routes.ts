@@ -2,16 +2,14 @@ import { Router } from 'express';
 import { BlogController } from '../controllers/blog.controller';
 import { mockAuthMiddleware } from '../middlewares/mockAuth.middleware';
 import { upload } from '../middlewares/upload';
-import { Blog } from 'src/database/models';
+// import { Blog } from 'src/database/models';
 
 const BlogRouter = Router();
 const blogController = new BlogController();
 
-// Public routes
 BlogRouter.get('/', blogController.getAllBlogs.bind(blogController));
 BlogRouter.get('/:id', blogController.getBlogById.bind(blogController));
 
-// Protected routes (with mock authentication)
 BlogRouter.post(
     '/',
     mockAuthMiddleware,
