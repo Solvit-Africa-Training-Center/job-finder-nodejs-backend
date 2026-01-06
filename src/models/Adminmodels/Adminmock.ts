@@ -1,10 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-export const AdminMiddleware = (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) => {
+export const mockAdmin = (req: Request, _res: Response, next: NextFunction) => {
   req.admin = {
     id: "mock-admin-id",
     email: "admin@mock.com",

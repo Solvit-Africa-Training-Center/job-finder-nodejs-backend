@@ -1,8 +1,15 @@
-import express, { Router } from 'express';
-import adminRoutes from './AdminRoutes';
+import { Router } from "express";
 
-const mainRoute: Router = express.Router();
+import jobCategoryRoutes from "./JobCategoryRoutes";
+import staticContentRoutes from "./StaticContentRoutes";
+import templateRoutes from "./TemplateRoutes";
+import adminAuditRoutes from "./AdminActionRoutes";
 
-mainRoute.use('/admin', adminRoutes);
+const router = Router();
 
-export default mainRoute;
+router.use("/admin/categories", jobCategoryRoutes);
+router.use("/admin/content", staticContentRoutes);
+router.use("/admin/templates", templateRoutes);
+router.use("/admin/audit-logs", adminAuditRoutes);
+
+export default router;

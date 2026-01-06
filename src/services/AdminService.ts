@@ -1,22 +1,23 @@
-import Admin from '../models/Admin';
-
+/**
+ * AdminService
+ * NOTE: Admin user model / management is not implemented in this repository yet.
+ * These methods throw explicit errors to avoid accidental usage.
+ * When an Admin user model is added, replace these implementations to call the model (e.g., AdminUser.create()).
+ */
 export class AdminService {
-  static async createAdmin(data: { email: string; password: string }) {
-    const admin = await Admin.create(data);
-    return admin;
+  static async createAdmin(_data: { email: string; password: string }) {
+    throw new Error('createAdmin is not implemented: Admin user model is missing.');
   }
 
   static async getAdmins() {
-    const admins = await Admin.findAll();
-    return admins;
+    throw new Error('getAdmins is not implemented: Admin user model is missing.');
   }
 
-  static async getAdminById(id: string) {
-    const admin = await Admin.findByPk(id);
-    return admin;
+  static async getAdminById(_id: string) {
+    throw new Error('getAdminById is not implemented: Admin user model is missing.');
   }
 
-  static async deactivateAdmin(id: string) {
-    await Admin.update({ isActive: false }, { where: { id } });
+  static async deactivateAdmin(_id: string) {
+    throw new Error('deactivateAdmin is not implemented: Admin user model is missing.');
   }
 }

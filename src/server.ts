@@ -1,9 +1,12 @@
 import express, { Express } from 'express';
 import { config as Dotenv } from 'dotenv';
 Dotenv();
-import { configs } from './config';
-import { initialize } from './database';
+import { initialize } from './config/database';
+import { configs } from './config/database';
 import mainRoute from './routes';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger';
+
 
 const app: Express = express();
 
@@ -23,5 +26,8 @@ const startApp = async () => {
 };
 
 startApp();
+const swaggerSpec = swaggerDocument;
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export default app;
