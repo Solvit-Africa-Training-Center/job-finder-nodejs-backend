@@ -6,34 +6,17 @@ const notificationController = new NotificationController();
 
 /**
  * @swagger
+ * /notifications/list:
+ *   get:
+ *     summary: Get all notifications (For Testing/Admin)
+ *     tags: [Notifications]
  * /notifications/test:
  *   post:
- *     summary: Trigger a test notification/email
- *     tags: [Notifications]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               userId:
- *                 type: integer
- *               type:
- *                 type: string
- *                 enum: [new_message, application_status, job_alert, job_status, welcome, verification]
- *               metadata:
- *                 type: object
- */
-/**
- * @swagger
- * /notifications/direct-test:
- *   post:
- *     summary: Trigger a direct test email (skips queue/Redis)
+ *     summary: Trigger a test notification
  *     tags: [Notifications]
  */
-router.post('/direct-test', notificationController.directTest);
-
-router.post('/test', notificationController.testNotification);
+router.get('/list', notificationController.getAll);
+router.post('/test', notificationController.send);
+router.get('/test', notificationController.send);
 
 export default router;
