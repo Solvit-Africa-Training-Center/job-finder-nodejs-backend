@@ -1,8 +1,10 @@
-import express, { Router } from "express";
-import BlogRouter from "./blog.routes";
+import express, { Router } from 'express';
+import faqRouter from './faq.routes';
+import staticPageRouter from './staticPage.routes';
 
+const mainRoute: Router = express.Router();
 
-const routes: Router[] = [BlogRouter];
-const mainRouter = express();
-mainRouter.use(routes);
-export { mainRouter };
+mainRoute.use('/faqs', faqRouter);
+mainRoute.use('/pages', staticPageRouter);
+
+export default mainRoute;

@@ -1,36 +1,23 @@
 import { Sequelize } from 'sequelize';
-import Blog from './blog.model';
-import Comment from './comment.model';
-import Like from './like.model';
+import { initFAQModel } from './faq.model';
+import { initStaticPageModel } from './staticPage.model';
+import { SampleUser, SampleUserModel } from './sampleuser';
 
-export const allModel = (sequelizeInstance?: Sequelize) => {
+interface Models {
+  FAQ: ReturnType<typeof initFAQModel>;
+  StaticPage: ReturnType<typeof initStaticPageModel>;
+  SampleUser: typeof SampleUser;
+}
 
-  Blog.hasMany(Comment, {
-    foreignKey: 'blogId',
-    as: 'comments',
-    onDelete: 'CASCADE',
-  });
-
-  Blog.hasMany(Like, {
-    foreignKey: 'blogId',
-    as: 'likes',
-    onDelete: 'CASCADE',
-  });
-
-  Comment.belongsTo(Blog, {
-    foreignKey: 'blogId',
-    as: 'blog',
-  });
-
-  Like.belongsTo(Blog, {
-    foreignKey: 'blogId',
-    as: 'blog',
-  });
+export const allModel = (sequelize: Sequelize): Models => {
+  const FAQ = initFAQModel(sequelize);
+  const StaticPage = initStaticPageModel(sequelize);
+  const SampleUser = SampleUserModel(sequelize);
 
   return {
-    Blog,
-    Comment,
-    Like
+    FAQ,
+    StaticPage,
+    SampleUser,
   };
 };
 

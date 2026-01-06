@@ -1,30 +1,35 @@
 import { Sequelize } from 'sequelize';
-import { databaseConnection } from '../config/database';
-import { allModel } from '../database/models';
+import { databaseConnection } from '../config';
+import { allModel } from './models';
 
-let sequelize: Sequelize;
+interface DatabaseConfigInterface {
+  database: string;
+  username: string;
+  password: string;
+  port: string;
+}
 
-const checkDb = async (config: ReturnType<typeof databaseConnection>) => {
+const config = databaseConnection() as DatabaseConfigInterface;
+
+let sequelize = new Sequelize({
+  database: 'postgres',
+  username: config.username,
+  password: config.password,
+  port: Number(config.port),
+  dialect: 'postgres',
+});
+
+const checkDb = async () => {
   try {
-
-    const tempSequelize = new Sequelize({
-      database: 'postgres',
-      username: config.username,
-      password: config.password,
-      host: config.host,
-      port: config.port,
-      dialect: 'postgres',
-      logging: false,
-    });
-
-    const [result] = await tempSequelize.query(
-      `SELECT 1 FROM pg_database WHERE datname = '${config.database}'`
+    const [result] = await sequelize.query(
+      `SELECT 1 FROM pg_database WHERE datname = '${config.database}'`,
     );
 
     if (result.length === 0) {
-      console.log(`Database '${config.database}' does not exist. Creating it...`);
-      await tempSequelize.query(`CREATE DATABASE "${config.database}"`);
-      console.log(`Database '${config.database}' created successfully`);
+      console.log(
+        `Database '${config.database}' doesnot exist. Creating it...`,
+      );
+      await sequelize.query(`CREATE DATABASE "${config.database}"`);
     }
 
     await tempSequelize.close();
@@ -34,12 +39,9 @@ const checkDb = async (config: ReturnType<typeof databaseConnection>) => {
   }
 };
 
-const connectToDb = async () => {
+export const connectToDb = async () => {
   try {
-    const config = databaseConnection();
-
-    await checkDb(config);
-
+    await checkDb();
 
     sequelize = new Sequelize({
       database: config.database,
@@ -58,31 +60,19 @@ const connectToDb = async () => {
     });
 
     await sequelize.authenticate();
-    console.log(`Database connected: ${config.database}`);
-
+    console.log('Database Connected');
 
     const models = allModel(sequelize);
 
-    if (process.env.NODE_ENV === 'development') {
-      await sequelize.sync({ alter: true });
-      console.log('Database models synchronized');
-    }
+    Object.values(models).forEach((model: any) => {
+      if (typeof model.associate === 'function') {
+        model.associate(models);
+      }
+    });
 
     return { sequelize, ...models };
   } catch (error) {
-    console.error("Error connecting to database:", error);
+    console.error('Error connecting to database: ', error);
     throw error;
   }
 };
-
-export const initialize = async () => {
-  try {
-    const { sequelize, ...models } = await connectToDb();
-    return { sequelize, ...models };
-  } catch (error) {
-    console.error('Error during database initialization');
-    throw error;
-  }
-};
-
-export { sequelize };

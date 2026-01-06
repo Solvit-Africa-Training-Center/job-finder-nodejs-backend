@@ -1,10 +1,14 @@
 import express, { Express } from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import swaggerUi from 'swagger-ui-express';
 import { config as Dotenv } from 'dotenv';
 import path from 'path';
 Dotenv();
-import { configs } from './config';
-import { initialize } from './database';
-import blogRoutes from './routes/blog.routes';
+import { configs, swaggerDocument } from './config';
+import { connectToDb } from './database';
+import { errorHandler, applyRateLimit } from './middlewares';
+import mainRoute from './routes';
 
 const app: Express = express();
 
@@ -15,15 +19,34 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 const startApp = async () => {
   try {
-    await initialize();
-    console.log(' Database initialized successfully');
+    // security middleware
+    app.use(helmet());
+    app.use(cors());
 
-    app.use(`${configs.prefix}/blogs`, blogRoutes);
+    // rate limit
+    applyRateLimit(app);
+
+    // body parsing
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+
+    // database connection
+    await connectToDb();
+
+    // swagger documentation
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+    // routes
+    app.use(configs.prefix, mainRoute);
+
+    // error handler
+    app.use(errorHandler);
 
     app.listen(configs.port, () => {
-      console.log(` Server running on http://localhost:${configs.port}`);
-      console.log(`API prefix: ${configs.prefix}`);
-      console.log(` Environment: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`Server running on port ${configs.port}`);
+      console.log(
+        `API documentation: http://localhost:${configs.port}/api-docs`,
+      );
     });
   } catch (error) {
     console.error('Error starting app:', error);
