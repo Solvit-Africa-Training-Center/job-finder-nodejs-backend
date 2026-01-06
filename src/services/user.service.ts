@@ -1,8 +1,12 @@
-import { SampleUser } from '../database/models/sampleuser';
+import { UserRepository } from '../repository';
+import { createUserAttributes } from 'src/types/user';
 
 export class UserService {
-  fetchAllUsers = async () => {
-    const users = await SampleUser.findAll();
-    return users;
+  static fetchAllUsers = async () => {
+    return await UserRepository.fetchAll();
+  };
+
+  static createUser = async (userData: createUserAttributes) => {
+    return await UserRepository.create(userData);
   };
 }
