@@ -23,12 +23,14 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "cloudinary": "^2.8.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "js-yaml": "^4.1.1",
+    "multer": "^2.0.2",
     "pg": "^8.16.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.7",
@@ -39,6 +41,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/js-yaml": "^4.0.9",
+    "@types/multer": "^2.0.0",
     "@types/node": "^25.0.3",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
