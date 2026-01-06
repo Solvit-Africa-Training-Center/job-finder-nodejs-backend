@@ -1,4 +1,9 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
+import { Message } from './Message';
+
+interface Models {
+  Message: typeof Message;
+}
 
 export class Conversation extends Model {
   public id!: string;
@@ -8,7 +13,7 @@ export class Conversation extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     if (models.Message) {
       Conversation.hasMany(models.Message, {
         foreignKey: 'conversationId',
@@ -35,7 +40,7 @@ export const initConversationModel = (sequelize: Sequelize) => {
       sequelize,
       tableName: 'conversations',
       timestamps: true,
-    }
+    },
   );
 
   return Conversation;

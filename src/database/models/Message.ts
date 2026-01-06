@@ -1,4 +1,9 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
+import { Conversation } from './Conversation';
+
+interface Models {
+  Conversation: typeof Conversation;
+}
 
 export class Message extends Model {
   public id!: string;
@@ -9,7 +14,7 @@ export class Message extends Model {
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 
-  static associate(models: any) {
+  static associate(models: Models) {
     if (models.Conversation) {
       Message.belongsTo(models.Conversation, {
         foreignKey: 'conversationId',
@@ -36,7 +41,7 @@ export const initMessageModel = (sequelize: Sequelize) => {
       sequelize,
       tableName: 'messages',
       timestamps: true,
-    }
+    },
   );
 
   return Message;

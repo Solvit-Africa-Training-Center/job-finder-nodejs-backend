@@ -1,98 +1,91 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import conversationService from '../services/conversation.service';
+import { successResponse, AppError } from '../utils';
 
 export class ConversationController {
-
-  async createConversation(req: Request, res: Response) {
+  async createConversation(req: Request, res: Response, next: NextFunction) {
     try {
       const { participant1Id, participant2Id } = req.body;
 
       // In production, participant1Id should come from authenticated user
       // For now using mock data
       if (!participant1Id || !participant2Id) {
-        return res.status(400).json({
-          success: false,
-          message: 'Both participant1Id and participant2Id are required'
-        });
+        throw new AppError(
+          'Both participant1Id and participant2Id are required',
+          400,
+        );
       }
 
       if (participant1Id === participant2Id) {
-        return res.status(400).json({
-          success: false,
-          message: 'Cannot create conversation with yourself'
-        });
+        throw new AppError('Cannot create conversation with yourself', 400);
       }
 
       const conversation = await conversationService.createConversation(
         participant1Id,
-        participant2Id
+        participant2Id,
       );
 
-      return res.status(201).json({
-        success: true,
-        data: conversation
+      return successResponse(res, {
+        data: conversation,
+        statusCode: 201,
+        message: 'Conversation created successfully',
       });
     } catch (error: any) {
-      return res.status(500).json({
-        success: false,
-        message: error.message || 'Error creating conversation'
-      });
+      return next(error);
     }
   }
 
- 
-  async getUserConversations(req: Request, res: Response) {
+  async getUserConversations(req: Request, res: Response, next: NextFunction) {
     try {
       // In production, userId should come from authenticated user (req.user.id)
       const userId = req.query.userId as string;
 
       if (!userId) {
-        return res.status(400).json({
-          success: false,
-          message: 'userId is required'
-        });
+        throw new AppError('userId is required', 400);
       }
 
-      const conversations = await conversationService.getUserConversations(userId);
+      const conversations =
+        await conversationService.getUserConversations(userId);
 
-      return res.status(200).json({
-        success: true,
-        data: conversations
+      return successResponse(res, {
+        data: conversations,
+        statusCode: 200,
+        message: 'Conversations retrieved successfully',
       });
     } catch (error: any) {
-      return res.status(500).json({
-        success: false,
-        message: error.message || 'Error fetching conversations'
-      });
+      return next(error);
     }
   }
 
-  
-  async getConversationById(req: Request, res: Response) {
+  async getConversationById(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
       // In production, userId should come from authenticated user
       const userId = req.query.userId as string;
 
       if (!userId) {
-        return res.status(400).json({
-          success: false,
-          message: 'userId is required'
-        });
+        throw new AppError('userId is required', 400);
       }
 
-      const conversation = await conversationService.getConversationById(id, userId);
+      const conversation = await conversationService.getConversationById(
+        id,
+        userId,
+      );
 
-      return res.status(200).json({
-        success: true,
-        data: conversation
+      return successResponse(res, {
+        data: conversation,
+        statusCode: 200,
+        message: 'Conversation retrieved successfully',
       });
     } catch (error: any) {
-      const statusCode = error.message.includes('not found') ? 404 : 500;
-      return res.status(statusCode).json({
-        success: false,
-        message: error.message || 'Error fetching conversation'
-      });
+      if (
+        error &&
+        typeof error.message === 'string' &&
+        error.message.includes('not found')
+      ) {
+        return next(new AppError(error.message, 404));
+      }
+      return next(error);
     }
   }
 }
