@@ -11,7 +11,7 @@ interface DatabaseConfigInterface {
 
 const config = databaseConnection() as DatabaseConfigInterface;
 
-let sequelize = new Sequelize({
+export let sequelize = new Sequelize({
   database: 'postgres',
   username: config.username,
   password: config.password,
@@ -31,8 +31,6 @@ const checkDb = async () => {
       );
       await sequelize.query(`CREATE DATABASE "${config.database}"`);
     }
-
-    await tempSequelize.close();
   } catch (error) {
     console.error('Error checking or creating database:', error);
     throw error;
@@ -47,16 +45,8 @@ export const connectToDb = async () => {
       database: config.database,
       username: config.username,
       password: config.password,
-      host: config.host,
-      port: config.port,
-      dialect: config.dialect,
-      logging: process.env.NODE_ENV === 'development' ? console.log : false,
-      pool: {
-        max: 5,
-        min: 0,
-        acquire: 30000,
-        idle: 10000,
-      },
+      port: Number(config.port),
+      dialect: 'postgres',
     });
 
     await sequelize.authenticate();

@@ -2,42 +2,44 @@ import { QueryInterface, DataTypes } from 'sequelize';
 
 export default {
   async up(queryInterface: QueryInterface) {
-    await queryInterface.createTable('blogs', {
+    // Drop the old comments table if it exists
+    await queryInterface.dropTable('comments');
+    // Recreate with correct posted_date column
+    await queryInterface.createTable('comments', {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      title: {
+      user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      username: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      content: {
+      comment: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
       posted_date: {
         type: DataTypes.STRING,
-        allowNull: true,
-      },
-      image_url: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      created_at: {
-        type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
       },
-      updated_at: {
-        type: DataTypes.DATE,
+      blog_id: {
+        type: DataTypes.UUID,
         allowNull: false,
-        defaultValue: DataTypes.NOW,
+        references: {
+          model: 'blogs',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
     });
   },
 
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('blogs');
+    await queryInterface.dropTable('comments');
   },
 };

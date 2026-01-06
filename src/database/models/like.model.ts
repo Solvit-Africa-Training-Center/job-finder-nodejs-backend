@@ -1,38 +1,37 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../../config/database';
-import { LikeAttributes } from '../../types/likes.interface';
+import { DataTypes, Model, ModelAttributes } from 'sequelize';
+import { LikesAttributes } from '../../types/likes.interface';
 
-class Like extends Model<LikeAttributes> implements LikeAttributes {
-    public id!: number;
-    public user_id!: number;
-    public blogId!: number;
+class Like extends Model<LikesAttributes> implements LikesAttributes {
+  public id!: string;
+  public user_id!: string;
+  public blogId!: string;
+
+  static getModelAttributes(): ModelAttributes<Like> {
+    return {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
+      user_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+      },
+      blog_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: 'blogs',
+          key: 'id',
+        },
+        field: 'blog_id',
+      },
+    };
+  }
 }
-
-Like.init(
-    {
-        id: {
-            type: DataTypes.INTEGER,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        user_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-            references: {
-                model: 'users',
-                key: 'id',
-            },
-        },
-        blogId: {
-            type: DataTypes.INTEGER,
-            allowNull: false,
-        },
-    },
-    {
-        sequelize,
-        tableName: 'likes',
-        timestamps: false,
-    }
-);
 
 export default Like;

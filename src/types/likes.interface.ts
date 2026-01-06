@@ -1,5 +1,5 @@
-export interface LikeAttributes {
-    id?: number;
-    user_id: number;
-    blogId?: number;
+export interface LikesAttributes {
+  id?: string;
+  user_id: string;
+  blogId?: string;
 }

@@ -1,9 +1,5 @@
 require('dotenv/config');
 
-/**
- * database configuration for sequelize CLI migrations
- */
-
 const prefixConf = () => {
   const prefixEnv = process.env.NODE_ENV || 'development';
   let prefix;

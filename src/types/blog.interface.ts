@@ -1,30 +1,33 @@
 export interface BlogAttributes {
-    id: number;
-    title: string;
-    content: string;
-    postedDate?: string;
-    imageUrl?: string;
-    createdAt?: Date;
-    updatedAt?: Date;
+  id: string;
+  title: string;
+  content: string;
+  description?: string;
+  postedDate?: string;
+  imageUrl?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface CreateBlogDTO {
-    title: string;
-    content: string;
+  title: string;
+  content: string;
+  description?: string;
 }
 
 export interface UpdateBlogDTO {
-    title?: string;
-    content?: string;
+  title?: string;
+  content?: string;
+  description?: string;
 }
 
 export interface CommentDTO {
-    comment: string;
+  comment: string;
 }
 
 export interface MockUser {
-    id: number;
-    username: string;
-    email: string;
-    role: 'admin' | 'user';
+  id: string;
+  username: string;
+  email: string;
+  role: 'admin' | 'user';
 }
