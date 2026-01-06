@@ -9,6 +9,9 @@ import { connectToDb } from './database';
 import { errorHandler, applyRateLimit } from './middlewares';
 import mainRoute from './routes';
 
+// importing of upload test router
+import UploadTestRouter from './routes/upload.test.routes';
+
 const app: Express = express();
 
 const startApp = async () => {
@@ -32,6 +35,7 @@ const startApp = async () => {
 
     // routes
     app.use(configs.prefix, mainRoute);
+    app.use(configs.prefix, UploadTestRouter);
 
     // error handler
     app.use(errorHandler);
