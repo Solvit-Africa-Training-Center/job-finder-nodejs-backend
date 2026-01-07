@@ -1,6 +1,6 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 
-export interface emailVerificationTokenAttributes {
+export interface passwordResetTokenAttributes {
   id?: string;
   userId: string;
   token: string;
@@ -8,9 +8,9 @@ export interface emailVerificationTokenAttributes {
   createdAt?: Date;
 }
 
-export class EmailVerificationToken
-  extends Model<emailVerificationTokenAttributes>
-  implements emailVerificationTokenAttributes
+export class PasswordResetToken
+  extends Model<passwordResetTokenAttributes>
+  implements passwordResetTokenAttributes
 {
   id!: string;
   userId!: string;
@@ -20,10 +20,10 @@ export class EmailVerificationToken
   readonly createdAt!: Date;
 }
 
-export const initEmailVerficationTokenModel = (
+export const initPasswordResetTokenModel = (
   sequelize: Sequelize,
-): typeof EmailVerificationToken => {
-  EmailVerificationToken.init(
+): typeof PasswordResetToken => {
+  PasswordResetToken.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -52,9 +52,9 @@ export const initEmailVerficationTokenModel = (
     {
       sequelize,
       timestamps: false,
-      tableName: 'emailverificationstoken',
+      tableName: 'passwordresettoken',
     },
   );
 
-  return EmailVerificationToken;
+  return PasswordResetToken;
 };

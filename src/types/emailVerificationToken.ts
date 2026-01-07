@@ -1,6 +1,6 @@
-import { EmailVerificationTokenAttributes } from 'src/database/models/EmailVerificationToken';
+import { emailVerificationTokenAttributes } from '../database/models/emailVerificationToken';
 
 export type createEmailVerificationToken = Pick<
-  EmailVerificationTokenAttributes,
-  'userId' | 'token'
+  emailVerificationTokenAttributes,
+  'userId' | 'token' | 'expiresAt'
 >;

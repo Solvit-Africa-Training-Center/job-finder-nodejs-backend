@@ -4,11 +4,14 @@ import { AuthController } from '../controllers/auth.controller';
 const authRoute: Router = express.Router();
 
 authRoute.post(
-  '/send-verification-email',
-  AuthController.sendVerificationEmail,
+  '/send-email-verification',
+  AuthController.sendEmailVerificationToken,
 );
-authRoute.get('/verify-email/:token', AuthController.verifyEmailLink);
+authRoute.post('/verify-email/:token', AuthController.verifyEmailLink);
+
+authRoute.post('/forgot-password', AuthController.forgotPassword);
+authRoute.post('/password-reset/:token', AuthController.resetPassword);
+
 authRoute.post('/create-otp', AuthController.createOtp);
 authRoute.post('/verify-otp', AuthController.verifyOtp);
-authRoute.post('/password-reset', AuthController.createOtp);
 export default authRoute;
