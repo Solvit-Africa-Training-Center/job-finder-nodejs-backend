@@ -1,22 +1,22 @@
 'use strict';
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.createTable('conversations', {
       id: {
         type: Sequelize.UUID,
-        defaultValue: Sequelize.fn('uuid_generate_v4'),
+        defaultValue: Sequelize.UUIDV4,
         primaryKey: true,
       },
       participant1Id: {
         type: Sequelize.UUID,
         allowNull: false,
-        comment: 'Mock UUID - will be replaced with real User ID later'
+        comment: 'Mock UUID - will be replaced with real User ID later',
       },
       participant2Id: {
         type: Sequelize.UUID,
         allowNull: false,
-        comment: 'Mock UUID - will be replaced with real User ID later'
+        comment: 'Mock UUID - will be replaced with real User ID later',
       },
       lastMessageAt: {
         type: Sequelize.DATE,
@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
         defaultValue: Sequelize.fn('now'),
-      }
+      },
     });
 
     // Add index for faster queries
@@ -39,7 +39,7 @@ module.exports = {
     await queryInterface.addIndex('conversations', ['participant2Id']);
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('conversations');
-  }
+  },
 };

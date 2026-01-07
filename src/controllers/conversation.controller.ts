@@ -1,14 +1,13 @@
 import { Request, Response, NextFunction } from 'express';
 import conversationService from '../services/conversation.service';
 import { successResponse, AppError } from '../utils';
+import { getIO } from '../utils/socket';
 
 export class ConversationController {
   async createConversation(req: Request, res: Response, next: NextFunction) {
     try {
       const { participant1Id, participant2Id } = req.body;
 
-      // In production, participant1Id should come from authenticated user
-      // For now using mock data
       if (!participant1Id || !participant2Id) {
         throw new AppError(
           'Both participant1Id and participant2Id are required',
@@ -16,21 +15,24 @@ export class ConversationController {
         );
       }
 
-      if (participant1Id === participant2Id) {
-        throw new AppError('Cannot create conversation with yourself', 400);
-      }
-
       const conversation = await conversationService.createConversation(
         participant1Id,
         participant2Id,
       );
+
+      // Notify the recipient that they have a new conversation thread
+      const io = getIO();
+      io.to(participant2Id).emit('new_message', {
+        conversationId: conversation.id,
+        message: { content: 'Started a new conversation with you.' },
+      });
 
       return successResponse(res, {
         data: conversation,
         statusCode: 201,
         message: 'Conversation created successfully',
       });
-    } catch (error: any) {
+    } catch (error) {
       return next(error);
     }
   }
@@ -52,7 +54,7 @@ export class ConversationController {
         statusCode: 200,
         message: 'Conversations retrieved successfully',
       });
-    } catch (error: any) {
+    } catch (error) {
       return next(error);
     }
   }
@@ -77,14 +79,11 @@ export class ConversationController {
         statusCode: 200,
         message: 'Conversation retrieved successfully',
       });
-    } catch (error: any) {
-      if (
-        error &&
-        typeof error.message === 'string' &&
-        error.message.includes('not found')
-      ) {
+    } catch (error) {
+      if (error instanceof Error && error.message.includes('not found')) {
         return next(new AppError(error.message, 404));
       }
+
       return next(error);
     }
   }
