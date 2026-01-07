@@ -13,27 +13,20 @@ const app: Express = express();
 
 const startApp = async () => {
   try {
-    // security middleware
     app.use(helmet());
     app.use(cors());
 
-    // rate limit
     applyRateLimit(app);
 
-    // body parsing
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
 
-    // database connection
     await connectToDb();
 
-    // swagger documentation
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-    // routes
     app.use(configs.prefix, mainRoute);
 
-    // error handler
     app.use(errorHandler);
 
     app.listen(configs.port, () => {
