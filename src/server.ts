@@ -8,8 +8,37 @@ import { configs, swaggerDocument } from './config';
 import { connectToDb } from './database';
 import { errorHandler, applyRateLimit } from './middlewares';
 import mainRoute from './routes';
+import http from 'http';
+import { initSocket } from './utils/socket';
 
 const app: Express = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/api/v1', mainRoute);
+
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found',
+  });
+});
+
+app.use(
+  (
+    err: Error & { status?: number },
+    _req: express.Request,
+    res: express.Response,
+    _next: express.NextFunction,
+  ) => {
+    console.error('Error:', err);
+    res.status(err.status || 500).json({
+      success: false,
+      message: err.message || 'Internal server error',
+    });
+  },
+);
 
 const startApp = async () => {
   try {
@@ -36,7 +65,13 @@ const startApp = async () => {
     // error handler
     app.use(errorHandler);
 
-    app.listen(configs.port, () => {
+    //  Create the HTTP server
+    const server = http.createServer(app);
+
+    //  Initialize Socket.IO
+    initSocket(server);
+
+    server.listen(configs.port, () => {
       console.log(`Server running on port ${configs.port}`);
       console.log(
         `API documentation: http://localhost:${configs.port}/api-docs`,
