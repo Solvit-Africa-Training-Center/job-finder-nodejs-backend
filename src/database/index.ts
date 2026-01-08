@@ -1,6 +1,9 @@
 import { Sequelize } from 'sequelize';
 import { databaseConnection } from '../config';
 import { allModel } from './models';
+import { SampleUser } from './models/sampleuser';
+import { UserProfile } from './models/userprofile.model';
+import { UserActivityLog } from './models/useractivitylog.model';
 
 interface DatabaseConfigInterface {
   database: string;
@@ -54,11 +57,12 @@ export const connectToDb = async () => {
 
     const models = allModel(sequelize);
 
-    Object.values(models).forEach((model: any) => {
-      if (typeof model.associate === 'function') {
-        model.associate(models);
-      }
-    });
+    SampleUser.associate(models as unknown as Record<string, unknown>);
+    UserProfile.associate(models as unknown as Record<string, unknown>);
+    UserActivityLog.associate(models as unknown as Record<string, unknown>);
+
+    await sequelize.sync({ alter: true });
+    console.log('Models synced');
 
     return { sequelize, ...models };
   } catch (error) {

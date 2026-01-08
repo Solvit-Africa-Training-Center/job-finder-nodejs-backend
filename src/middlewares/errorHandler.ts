@@ -1,22 +1,38 @@
-import { Request, Response } from 'express';
-import { AppError } from '../utils';
+import { Request, Response, NextFunction } from 'express';
+import { AppError } from '../utils/AppError';
+import { errorResponse } from '../utils/apiResponse';
 
 export const errorHandler = (
   err: Error | AppError,
   req: Request,
   res: Response,
-): Response => {
+  _next: NextFunction,
+): void => {
+  const isDev = process.env.NODE_ENV === 'development';
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
-      success: false,
+    errorResponse(res, {
       message: err.message,
+      statusCode: err.statusCode,
+      errors: err.errors,
     });
+    return;
   }
 
-  console.error('Unexpected Error:', err);
+  console.error('Unexpected Error:', {
+    message: err.message,
+    stack: isDev ? err.stack : undefined,
+    timestamp: new Date().toISOString(),
+    path: req.path,
+    method: req.method,
+  });
 
-  return res.status(500).json({
-    success: false,
+  errorResponse(res, {
     message: 'Internal server error',
+    statusCode: 500,
+    ...(isDev
+      ? {
+          errors: [{ message: err.message }],
+        }
+      : {}),
   });
 };
